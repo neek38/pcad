@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PcadNew"
         mc:Ignorable="d"
-        Title="Начальная страница" Height="450" Width="800">
+        Title="Начальная страница" Height="450" Width="800">     
     <Grid>
         <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
             <MenuItem Header="Файл" >
