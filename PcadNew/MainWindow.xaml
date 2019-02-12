@@ -17,6 +17,7 @@
             <MenuItem Header="Компоновка" ></MenuItem>
             <MenuItem Header="Размещение" ></MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
+            <MenuItem Header="Финальный проект" ></MenuItem>
         </Menu>
 
 
