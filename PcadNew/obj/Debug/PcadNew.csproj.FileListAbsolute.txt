@@ -13,3 +13,10 @@ C:\Users\imnee\Documents\pcadGit\PcadNew\obj\Debug\PcadNew.csproj.GenerateResour
 C:\Users\imnee\Documents\pcadGit\PcadNew\obj\Debug\PcadNew.csproj.CoreCompileInputs.cache
 C:\Users\imnee\Documents\pcadGit\PcadNew\obj\Debug\PcadNew.exe
 C:\Users\imnee\Documents\pcadGit\PcadNew\obj\Debug\PcadNew.pdb
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\PcadNew.csprojAssemblyReference.cache
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\MainWindow.g.cs
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\App.g.cs
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\PcadNew_MarkupCompile.cache
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\PcadNew_MarkupCompile.lref
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\PcadNew.exe
+C:\Users\imnee\Documents\testPcad\pcad\PcadNew\obj\Debug\PcadNew.pdb

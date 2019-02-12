@@ -11,7 +11,7 @@
             <MenuItem Header="Файл" >
                 <MenuItem Header="Первый пункт" ></MenuItem>
                 <MenuItem Header="Второй пункт" ></MenuItem>
-                <MenuItem Header="Третий пункт" Click="MenuItem_Click" ></MenuItem>
+                <MenuItem Header="Третий пункт" ></MenuItem>
             </MenuItem>
             <MenuItem Header="Формирование R,Q" ></MenuItem>
             <MenuItem Header="Компоновка" ></MenuItem>
