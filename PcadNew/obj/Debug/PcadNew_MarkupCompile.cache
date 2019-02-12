@@ -4,15 +4,26 @@
 winexe
 C#
 .cs
+<<<<<<< HEAD
 D:\NewP\pcad\PcadNew\obj\Debug\
+=======
+D:\Учеба\krasulin_evtushenko_mvv\pcad\PcadNew\obj\Debug\
+>>>>>>> 618abf0018655a067a80a8be8a7043ef8efe5fe6
 PcadNew
 none
 false
 DEBUG;TRACE
+<<<<<<< HEAD
 D:\NewP\pcad\PcadNew\App.xaml
 11151548125
 
 9280826244
+=======
+D:\Учеба\krasulin_evtushenko_mvv\pcad\PcadNew\App.xaml
+11151548125
+
+9-1757729943
+>>>>>>> 618abf0018655a067a80a8be8a7043ef8efe5fe6
 131569487696
 MainWindow.xaml;
 
