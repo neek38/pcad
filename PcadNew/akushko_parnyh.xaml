@@ -1,0 +1,60 @@
+﻿<Window x:Class="PcadNew.akushko_parnyh"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="akushko_parnyh" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="11*"/>
+        </Grid.ColumnDefinitions>
+        <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Height="0" Width="0">
+            <Polyline Stroke="Black" Points="50,25,260,25,260,235,50,235,50,185,25,185,25,75,50,75,50,25"></Polyline>
+            <Polyline Stroke="Black" Points="25,80,50,80,25,80,25,85,50,85,25,85,25,90,50,90,25,90,25,95,50,95,25,95,25,100,50,100,25,100,25,105,50,105,25,105,25,110,50,110,25,110,25,115,50,115,25,115,25,120,50,120,25,120,25,125,50,125,25,125,25,130,50,130,25,130,25,135,50,135,25,135,25,140,50,140,25,140,25,145,50,145,25,145,25,150,50,150,25,150,25,155,50,155,25,155,25,160,50,160,25,160,25,165,50,165,25,165,25,170,50,170,25,170,25,175,50,175,25,175,25,180,50,180,25,180,25,185,50,185,50,75" Width="50"/>
+            <!--1 column-->
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="60,35,0,0"/>
+            <TextBlock Name="pos1" Margin="72,47,0,0" >D1</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="60,85,0,0"/>
+            <TextBlock Name="pos2" Margin="72,97,0,0" >D2</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="60,135,0,0"/>
+            <TextBlock Name="pos3" Margin="72,147,0,0" >D3</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="60,185,0,0"/>
+            <TextBlock Name="pos4" Margin="72,197,0,0" >D4</TextBlock>
+            <!--2 column-->
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="110,35,0,0"/>
+            <TextBlock Name="pos5" Margin="122,47,0,0" >D5</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="110,85,0,0"/>
+            <TextBlock Name="pos6" Margin="122,97,0,0" >D6</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="110,135,0,0"/>
+            <TextBlock Name="pos7" Margin="122,147,0,0" >D7</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="110,185,0,0"/>
+            <TextBlock Name="pos8" Margin="122,197,0,0" >D8</TextBlock>
+            <!--3 column-->
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="160,35,0,0"/>
+            <TextBlock Name="pos9" Margin="172,47,0,0" >D9</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="160,85,0,0"/>
+            <TextBlock Name="pos10" Margin="172,97,0,0" >D10</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="160,135,0,0"/>
+            <TextBlock Name="pos11" Margin="172,147,0,0" >D11</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="160,185,0,0"/>
+            <TextBlock Name="pos12" Margin="172,197,0,0" >D12</TextBlock>
+            <!--4 column-->
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="210,35,0,0"/>
+            <TextBlock Name="pos13" Margin="222,47,0,0" >D13</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="210,85,0,0"/>
+            <TextBlock Name="pos14" Margin="222,97,0,0" >D14</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="210,135,0,0"/>
+            <TextBlock Name="pos15" Margin="222,147,0,0" >D15</TextBlock>
+            <Rectangle Stroke="Black" Width="40" Height="40" Margin="210,185,0,0"/>
+            <TextBlock Name="pos16" Margin="222,197,0,0" >D16</TextBlock>
+        </Canvas>
+        <TextBox  Name="tb" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Height="389" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="464" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto"/>
+        <Button Name="d_bt" Content="Demo" HorizontalAlignment="Left" Margin="19,137,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Demo_Click"/>
+        <Button Name="s_bt" Content="Start" HorizontalAlignment="Left" Margin="99,137,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Start_Click"/>
+        <Button Name="n_bt" Content="Next" HorizontalAlignment="Left" Margin="179,137,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Next_Click"/>
+
+    </Grid>
+</Window>

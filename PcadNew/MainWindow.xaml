@@ -15,7 +15,14 @@
             </MenuItem>
             <MenuItem Header="Формирование R,Q" ></MenuItem>
             <MenuItem Header="Компоновка" ></MenuItem>
-            <MenuItem Header="Размещение" ></MenuItem>
+            <MenuItem Header="Размещение" >
+                <MenuItem Header="Последовательный"></MenuItem>
+                <MenuItem Header="Итерационный">
+                    <MenuItem Header="Общий итерационный метод"></MenuItem>
+                    <MenuItem Header="Метод парных перестановок" Click="Parnyh_Click" ></MenuItem>
+                    <MenuItem Header="Метод Шаффера"></MenuItem>
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
         </Menu>
 

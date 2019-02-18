@@ -24,5 +24,11 @@ namespace PcadNew
         {
             InitializeComponent();
         }
+
+        private void Parnyh_Click(object sender, RoutedEventArgs e)
+        {
+            akushko_parnyh parnyhWindow = new akushko_parnyh();
+            parnyhWindow.ShowDialog();
+        }
     }
 }
