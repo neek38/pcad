@@ -1,0 +1,73 @@
+﻿<Window x:Class="PcadNew.WindowShaffera"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="WindowShaffera" Height="450" Width="800" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="74*"/>
+            <RowDefinition Height="31*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ListView Grid.Column="1" HorizontalAlignment="Left" Height="262" Margin="139,10,0,0" VerticalAlignment="Top" Width="218">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Rectangle Name="P1" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="90,40,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P5" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="140,40,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P9" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="190,40,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P13" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="240,40,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+
+        <Rectangle Name="P2" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="90,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P6" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="140,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P10" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="190,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P14" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="240,90,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+
+        <Rectangle Name="P3" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="90,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P7" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="140,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P11" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="190,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P15" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="240,140,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+
+        <Rectangle Name="P4" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="90,190,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P8" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="140,190,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P12" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="190,190,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <Rectangle Name="P16" Grid.Column="0" Grid.Row="0" Fill="#FF52BD6B" HorizontalAlignment="Left" Height="30" Margin="240,190,0,0" Stroke="Black" VerticalAlignment="Top" Width="30" Visibility="Hidden"/>
+        <GroupBox Header="Демо режим" HorizontalAlignment="Left" Height="100" Margin="57,14,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="243" FontSize="14">
+            <Grid HorizontalAlignment="Left" Height="80"  VerticalAlignment="Top" Width="233" Margin="0,0,-2,-5"  >
+                <Button Name="Start" Content="Запуск" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="97" Height="63" FontFamily="Calibri" FontSize="20" Click="Demo_Start"/>
+                <Button Name="Step" Content="Шаг" HorizontalAlignment="Left" Margin="136,7,0,0" VerticalAlignment="Top" Width="87" Height="24" IsEnabled="False"/>
+                <Button Name="DoAll" Content="Сделать всё" HorizontalAlignment="Left" Margin="136,44,0,0" VerticalAlignment="Top" Width="87" IsEnabled="False" Click="Demo_do_All"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Рабочий режим" HorizontalAlignment="Left" Height="100" Margin="51,14,0,0" Grid.Row="1" VerticalAlignment="Top" Width="306" FontSize="14"/>
+        <TextBlock Name="TB1" HorizontalAlignment="Left" Margin="90,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB5" HorizontalAlignment="Left" Margin="140,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB9" HorizontalAlignment="Left" Margin="190,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB13" HorizontalAlignment="Left" Margin="240,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+
+        <TextBlock Name="TB2" HorizontalAlignment="Left" Margin="90,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB6" HorizontalAlignment="Left" Margin="140,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB10" HorizontalAlignment="Left" Margin="190,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB14" HorizontalAlignment="Left" Margin="240,90,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+
+        <TextBlock Name="TB3" HorizontalAlignment="Left" Margin="90,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB7" HorizontalAlignment="Left" Margin="140,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB11" HorizontalAlignment="Left" Margin="190,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB15" HorizontalAlignment="Left" Margin="240,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+
+        <TextBlock Name="TB4" HorizontalAlignment="Left" Margin="90,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB8" HorizontalAlignment="Left" Margin="140,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB12" HorizontalAlignment="Left" Margin="190,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB16" HorizontalAlignment="Left" Margin="240,190,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+
+
+    </Grid>
+</Window>

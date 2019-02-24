@@ -24,5 +24,17 @@ namespace PcadNew
         {
             InitializeComponent();
         }
+        
+        private void Call_Method_Shaffera(object sender, RoutedEventArgs e)
+        {
+            WindowShaffera windowShaffera = new WindowShaffera();
+            windowShaffera.Show();
+            windowShaffera.WindowShaffera_Closed += ShafferaClosed;
+            Window1.IsEnabled = false;
+        }
+        private void ShafferaClosed(object sender, EventArgs e)
+        {
+            Window1.IsEnabled = true;
+        }
     }
 }

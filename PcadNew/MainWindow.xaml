@@ -1,4 +1,4 @@
-﻿<Window x:Class="PcadNew.MainWindow"
+﻿<Window Name="Window1" x:Class="PcadNew.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,10 +15,15 @@
             </MenuItem>
             <MenuItem Header="Формирование R,Q" ></MenuItem>
             <MenuItem Header="Компоновка" ></MenuItem>
-            <MenuItem Header="Размещение" ></MenuItem>
+            <MenuItem Header="Размещение" >
+                <MenuItem Header="Последовательные" ></MenuItem>
+                <MenuItem Header="Итерационные" >
+                    <MenuItem Header="Общий итерационный" ></MenuItem>
+                    <MenuItem Header="Парных перестановок" ></MenuItem>
+                    <MenuItem Header="Шаффера" Click="Call_Method_Shaffera" />
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
         </Menu>
-
-
     </Grid>
 </Window>
