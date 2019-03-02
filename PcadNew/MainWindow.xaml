@@ -16,11 +16,11 @@
             <MenuItem Header="Формирование R,Q" ></MenuItem>
             <MenuItem Header="Компоновка" ></MenuItem>
             <MenuItem Header="Размещение" >
-                <MenuItem Header="Последовательные" ></MenuItem>
-                <MenuItem Header="Итерационные" >
-                    <MenuItem Header="Общий итерационный" ></MenuItem>
-                    <MenuItem Header="Парных перестановок" ></MenuItem>
-                    <MenuItem Header="Шаффера" Click="Call_Method_Shaffera" />
+                <MenuItem Header="Последовательные методы" ></MenuItem>
+                <MenuItem Header="Итерационные методы" >
+                    <MenuItem Header="Общий итерационный метод" ></MenuItem>
+                    <MenuItem Header="Метод парных перестановок" ></MenuItem>
+                    <MenuItem Header="Метод Шаффера" Click="Call_Method_Shaffera" />
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
