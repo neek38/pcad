@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using System.Threading;
 
 namespace PcadNew
 {
@@ -20,18 +19,21 @@ namespace PcadNew
     /// </summary>
     public partial class WindowShaffera : Window
     {
+        List<TextBlock> TB = new List<TextBlock>();   //список текстбоксов.
         public WindowShaffera()
         {
             InitializeComponent();
-
+            TB.Add(new TextBlock());           //нулевой элемент пустой,он не используется.
+            TB.Add(TB1); TB.Add(TB2); TB.Add(TB3); TB.Add(TB4); TB.Add(TB5); TB.Add(TB6); TB.Add(TB7); TB.Add(TB8);
+            TB.Add(TB9); TB.Add(TB10); TB.Add(TB11); TB.Add(TB12); TB.Add(TB13); TB.Add(TB14); TB.Add(TB15); TB.Add(TB16);
         }
         public event EventHandler WindowShaffera_Closed;  //передаёт в главное окно событие о закрытии данного окна
         private void Window_Closed(object sender, EventArgs e)
         {
             WindowShaffera_Closed(this, EventArgs.Empty);
+
         }
         int[,] R;
-        int[,] test;
         int[] pos;
         int L12, L23, L34;
         bool end_po_stolbcam, end_po_strokam, obmen = false;
@@ -79,7 +81,6 @@ namespace PcadNew
             }
             else
             {
-                Start_Demo.IsEnabled = false;
                 Start_Work.IsEnabled = false;
                 if (end_po_stolbcam == false)           //если по столбцам не закончилось,делаем по столбцам
                 {
@@ -118,7 +119,7 @@ namespace PcadNew
                             rCol[4] += R[pos[i + 4], pos[j + 12]];
                             rCol[5] += R[pos[i + 8], pos[j + 12]];
                         }
-                    Formula1(R, pos, rCol, formula1, value1,fl);    //текстовка 
+                    Formula1(R, pos, rCol, formula1, value1, fl);    //текстовка 
                     //----------------------Считаем дельтаL------------------------------------------------   
                     TextBox1.Text += "Считаем дельта L:\n"; TextBox1.ScrollToEnd();
                     L12 = (rCol[1] - rCol[3]) + (rCol[2] - rCol[4]);
@@ -138,16 +139,11 @@ namespace PcadNew
                     }
                     else
                     {
-                        //------------------меняем местами в массиве позиций-------------------------
-                        buf = pos[1]; pos[1] = pos[5]; pos[5] = buf;
-                        buf = pos[2]; pos[2] = pos[6]; pos[6] = buf;
-                        buf = pos[3]; pos[3] = pos[7]; pos[7] = buf;
-                        buf = pos[4]; pos[4] = pos[8]; pos[8] = buf;
-                        //---------------------------меняем визуал-------------------------
-                        bufstr = TB1.Text; TB1.Text = TB5.Text; TB5.Text = bufstr;
-                        bufstr = TB2.Text; TB2.Text = TB6.Text; TB6.Text = bufstr;
-                        bufstr = TB3.Text; TB3.Text = TB7.Text; TB7.Text = bufstr;
-                        bufstr = TB4.Text; TB4.Text = TB8.Text; TB8.Text = bufstr;
+                        for (int i = 1; i < 5; i++)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 4]; pos[i + 4] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 4].Text; TB[i + 4].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -161,14 +157,11 @@ namespace PcadNew
                     }
                     else
                     {
-                        buf = pos[5]; pos[5] = pos[9]; pos[9] = buf;
-                        buf = pos[6]; pos[6] = pos[10]; pos[10] = buf;
-                        buf = pos[7]; pos[7] = pos[11]; pos[11] = buf;
-                        buf = pos[8]; pos[8] = pos[12]; pos[12] = buf;
-                        bufstr = TB5.Text; TB5.Text = TB9.Text; TB9.Text = bufstr;
-                        bufstr = TB6.Text; TB6.Text = TB10.Text; TB10.Text = bufstr;
-                        bufstr = TB7.Text; TB7.Text = TB11.Text; TB11.Text = bufstr;
-                        bufstr = TB8.Text; TB8.Text = TB12.Text; TB12.Text = bufstr;
+                        for (int i = 5; i < 9; i++)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 4]; pos[i + 4] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 4].Text; TB[i + 4].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -177,19 +170,16 @@ namespace PcadNew
                 {
                     if (obmen == false)
                     {
+                        TextBox1.Text += "Максимально положительный - L34,меняем местами 3 и 4 столбцы\n"; TextBox1.ScrollToEnd();
                         obmen = true;
                     }
                     else
                     {
-                        TextBox1.Text += "Максимально положительный - L34,меняем местами 3 и 4 столбцы\n"; TextBox1.ScrollToEnd();
-                        buf = pos[9]; pos[9] = pos[13]; pos[13] = buf;
-                        buf = pos[10]; pos[10] = pos[14]; pos[14] = buf;
-                        buf = pos[11]; pos[11] = pos[15]; pos[15] = buf;
-                        buf = pos[12]; pos[12] = pos[16]; pos[16] = buf;
-                        bufstr = TB9.Text; TB9.Text = TB13.Text; TB13.Text = bufstr;
-                        bufstr = TB10.Text; TB10.Text = TB14.Text; TB14.Text = bufstr;
-                        bufstr = TB11.Text; TB11.Text = TB15.Text; TB15.Text = bufstr;
-                        bufstr = TB12.Text; TB12.Text = TB16.Text; TB16.Text = bufstr;
+                        for (int i = 9; i < 13; i++)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 4]; pos[i + 4] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 4].Text; TB[i + 4].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -244,16 +234,11 @@ namespace PcadNew
                     }
                     else
                     {
-                        //------------------меняем местами в массиве позиций-------------------------
-                        buf = pos[1]; pos[1] = pos[2]; pos[2] = buf;
-                        buf = pos[5]; pos[5] = pos[6]; pos[6] = buf;
-                        buf = pos[9]; pos[9] = pos[10]; pos[10] = buf;
-                        buf = pos[13]; pos[13] = pos[14]; pos[14] = buf;
-                        //---------------------------меняем визуал-------------------------
-                        bufstr = TB1.Text; TB1.Text = TB2.Text; TB2.Text = bufstr;
-                        bufstr = TB5.Text; TB5.Text = TB6.Text; TB6.Text = bufstr;
-                        bufstr = TB9.Text; TB9.Text = TB10.Text; TB10.Text = bufstr;
-                        bufstr = TB13.Text; TB13.Text = TB14.Text; TB14.Text = bufstr;
+                        for (int i = 1; i < 14; i += 4)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 1]; pos[i + 1] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 1].Text; TB[i + 1].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -267,14 +252,11 @@ namespace PcadNew
                     }
                     else
                     {
-                        buf = pos[2]; pos[2] = pos[3]; pos[3] = buf;
-                        buf = pos[6]; pos[6] = pos[7]; pos[7] = buf;
-                        buf = pos[10]; pos[10] = pos[11]; pos[11] = buf;
-                        buf = pos[14]; pos[14] = pos[15]; pos[15] = buf;
-                        bufstr = TB2.Text; TB2.Text = TB3.Text; TB3.Text = bufstr;
-                        bufstr = TB6.Text; TB6.Text = TB7.Text; TB7.Text = bufstr;
-                        bufstr = TB10.Text; TB10.Text = TB11.Text; TB11.Text = bufstr;
-                        bufstr = TB14.Text; TB14.Text = TB15.Text; TB15.Text = bufstr;
+                        for (int i = 2; i < 15; i += 4)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 1]; pos[i + 1] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 1].Text; TB[i + 1].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -288,14 +270,11 @@ namespace PcadNew
                     }
                     else
                     {
-                        buf = pos[3]; pos[3] = pos[4]; pos[4] = buf;
-                        buf = pos[7]; pos[7] = pos[8]; pos[8] = buf;
-                        buf = pos[11]; pos[11] = pos[12]; pos[12] = buf;
-                        buf = pos[15]; pos[15] = pos[16]; pos[16] = buf;
-                        bufstr = TB3.Text; TB3.Text = TB4.Text; TB4.Text = bufstr;
-                        bufstr = TB7.Text; TB7.Text = TB8.Text; TB8.Text = bufstr;
-                        bufstr = TB11.Text; TB11.Text = TB12.Text; TB12.Text = bufstr;
-                        bufstr = TB15.Text; TB15.Text = TB16.Text; TB16.Text = bufstr;
+                        for (int i = 3; i < 16; i += 4)
+                        {
+                            buf = pos[i]; pos[i] = pos[i + 1]; pos[i + 1] = buf;                           //меняем местами в массиве позиций
+                            bufstr = TB[i].Text; TB[i].Text = TB[i + 1].Text; TB[i + 1].Text = bufstr;     //меняем визуал
+                        }
                         obmen = false;
                         TextBox1.Text += "Следующий шаг:\n";
                     }
@@ -304,12 +283,12 @@ namespace PcadNew
                 {
                     end_po_strokam = true;
                     Start_Demo.IsEnabled = true;
-                    Start_Work.IsEnabled = false;
+                    Start_Work.IsEnabled = true;
                     TextBox1.Text += "Положительных L больше нет \nАлгоритм закончен!\n\n"; TextBox1.ScrollToEnd();
                 }
             }
         }
-        private void Formula1(int[,] R, int[] pos, int[] T, string[] formula, string[] value,int fl)
+        private void Formula1(int[,] R, int[] pos, int[] T, string[] formula, string[] value, int fl)
         {
             formula[0] = "T12="; formula[1] = "T13="; formula[2] = "T14="; formula[3] = "T23="; formula[4] = "T24="; formula[5] = "T34=";
             value[0] = value[1] = value[2] = value[3] = value[4] = value[5] = "";
@@ -408,22 +387,11 @@ namespace PcadNew
             TB1.Text = TB2.Text = TB3.Text = TB4.Text = TB5.Text = TB6.Text = TB7.Text = TB8.Text =
             TB9.Text = TB10.Text = TB11.Text = TB12.Text = TB13.Text = TB14.Text = TB15.Text = TB16.Text = "";
             //----------------------------------Заполнение ДРП---------------------------------------------------------------------------------
-            if (pos[1] != 0) TB1.Text = "D" + pos[1].ToString();
-            if (pos[2] != 0) TB2.Text = "D" + pos[2].ToString();
-            if (pos[3] != 0) TB3.Text = "D" + pos[3].ToString();
-            if (pos[4] != 0) TB4.Text = "D" + pos[4].ToString();
-            if (pos[5] != 0) TB5.Text = "D" + pos[5].ToString();
-            if (pos[6] != 0) TB6.Text = "D" + pos[6].ToString();
-            if (pos[7] != 0) TB7.Text = "D" + pos[7].ToString();
-            if (pos[8] != 0) TB8.Text = "D" + pos[8].ToString();
-            if (pos[9] != 0) TB9.Text = "D" + pos[9].ToString();
-            if (pos[10] != 0) TB10.Text = "D" + pos[10].ToString();
-            if (pos[11] != 0) TB11.Text = "D" + pos[11].ToString();
-            if (pos[12] != 0) TB12.Text = "D" + pos[12].ToString();
-            if (pos[13] != 0) TB13.Text = "D" + pos[13].ToString();
-            if (pos[14] != 0) TB14.Text = "D" + pos[14].ToString();
-            if (pos[15] != 0) TB15.Text = "D" + pos[15].ToString();
-            if (pos[16] != 0) TB16.Text = "D" + pos[16].ToString();
+            for (int i = 0; i < 16; i++)
+            {
+                if (pos[i] != 0)
+                    TB[i].Text = "D" + pos[i].ToString();
+            }
         }
         private void MatrixToTextbox(int[,] R)
         {
