@@ -14,3 +14,6 @@ D:\ourPCAD\pcad\PcadNew\obj\Release\PcadNew.csproj.GenerateResource.Cache
 D:\ourPCAD\pcad\PcadNew\obj\Release\PcadNew.exe
 D:\ourPCAD\pcad\PcadNew\obj\Release\PcadNew.pdb
 D:\ourPCAD\pcad\PcadNew\obj\Release\PcadNew.csprojResolveAssemblyReference.cache
+D:\ourPCAD\pcad\PcadNew\bin\Release\Newtonsoft.Json.dll
+D:\ourPCAD\pcad\PcadNew\bin\Release\Newtonsoft.Json.pdb
+D:\ourPCAD\pcad\PcadNew\bin\Release\Newtonsoft.Json.xml

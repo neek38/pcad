@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace PcadNew
 {
@@ -19,32 +23,56 @@ namespace PcadNew
     /// </summary>
     public partial class akushko_parnyh : Window
     {
+        List<DRP> newp = new List<DRP>();
+        List<DRP> resp = new List<DRP>();
         List<Rectangle> p = new List<Rectangle>();
         List<TextBlock> pos = new List<TextBlock>();
-        bool auto_fl = false, step_fl = false, demo_fl = false, ffl = true;
+        DRP res_uzel = new DRP();
+        StreamWriter sw = new StreamWriter("place_fin.json");
+        bool auto_fl = false, demo_fl = false, ffl = true;
         int[] el_array;
         int[,] drp_matr = new int[4, 4];
         int[,] r_matr;
         int[,] d_matr;
-        int[,] pos_json;
-        int[] positions = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        int[,] positions = new int[2, 16];
         int[,] pos_matr = new int[,] { { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3 }, { 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3, 0, 1, 2, 3 } };
         //матрица хранения max суммы для обмена
         int[,] pos_max = new int[2, 3] { { 0, 0, 0 }, { 0, 0, 0 } };
-        int step = 0, D1 = -1, D2 = -1, D3 = -1, D4 = -1;
+        int step = 0, D1 = -1, D2 = -1, uzel_index = 0;
+
         public akushko_parnyh()
         {
             InitializeComponent();
             p.Add(p1); p.Add(p2); p.Add(p3); p.Add(p4); p.Add(p5); p.Add(p6); p.Add(p7); p.Add(p8);
             p.Add(p9); p.Add(p10); p.Add(p11); p.Add(p12); p.Add(p13); p.Add(p14); p.Add(p15); p.Add(p16);
             pos.Add(pos1); pos.Add(pos2); pos.Add(pos3); pos.Add(pos4); pos.Add(pos5); pos.Add(pos6); pos.Add(pos7); pos.Add(pos8);
-            pos.Add(pos9); pos.Add(pos10); pos.Add(pos11); pos.Add(pos12); pos.Add(pos13); pos.Add(pos14); pos.Add(pos15); pos.Add(pos16); 
+            pos.Add(pos9); pos.Add(pos10); pos.Add(pos11); pos.Add(pos12); pos.Add(pos13); pos.Add(pos14); pos.Add(pos15); pos.Add(pos16);
+            res_uzel.Uzel = new int[16] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0 };
+            json_read();
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            positions = new int[2, 16];
+            Clear_Click(sender, e);
+            if (cb.SelectedIndex == 0)
+            {
+                demo_set();
+                c_bt.IsEnabled = true;
+                demo_fl = true;
+                D_calc();
+            }
+            else
+            {
+                uzel_index = cb.SelectedIndex - 1;
+                json_set();
+                D_calc();
+            }
         }
 
         private void Demo_Click(object sender, RoutedEventArgs e)
         {
             tb.Text += "\nDemo clicked\n";
-            d_bt.IsEnabled = false;
             c_bt.IsEnabled = true;
             demo_fl = true;
             demo_set();
@@ -55,39 +83,45 @@ namespace PcadNew
         private void Start_Click(object sender, RoutedEventArgs e)
         {
             tb.Text += "\nStart clicked\n";
-            d_bt.IsEnabled = false;
             auto_fl = true;
             n_bt.IsEnabled = false;
             c_bt.IsEnabled = true;
-            if (demo_fl == false && auto_fl == true && ffl == false)
-            {
-                json_set();
-                D_calc();
-                Work();
-            }
-            else if (demo_fl == false && auto_fl == true && ffl == true)
-            {
-                d_bt.IsEnabled = false;
-                json_set();
-                D_calc();
-                Work();
-            }
-            if (demo_fl == true && auto_fl == true)
+            if (demo_fl == true && ffl == true)
             {
                 drp_exchange();
                 D_calc();
+                Work();
+                ffl = false;
+            }
+            if (ffl == false && demo_fl == false)
+            {
+                uncolorize(D1, D2);
+                D_calc();
+                Work();
+            }
+            else if (ffl == true && demo_fl == false)
+            {
+                ffl = false;
                 Work();
             }
         }
 
         private void Next_Click(object sender, RoutedEventArgs e)
         {
-            uncolorize(D1, D2);
-            uncolorize(D3, D4);
-            n_bt.IsEnabled = false;
-            drp_exchange();
-            D_calc();
-            Work();
+            if (ffl == true)
+            {
+                Work();
+                ffl = false;
+                c_bt.IsEnabled = true;
+            }
+            else
+            {
+                uncolorize(D1, D2);
+                c_bt.IsEnabled = true;
+                drp_exchange();
+                D_calc();
+                Work();
+            }
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -99,19 +133,139 @@ namespace PcadNew
                 pos_unvisible(i);
                 p[i].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
             }
-            auto_fl = demo_fl = step_fl = false;
-            d_bt.IsEnabled = s_bt.IsEnabled = n_bt.IsEnabled = true;
+            auto_fl = demo_fl = false;
+            s_bt.IsEnabled = n_bt.IsEnabled = ffl = true;
             step = pos_max[0, 0] = pos_max[0, 1] = pos_max[0, 2] = pos_max[1, 1] = pos_max[1, 2] = 0;
             rd.Clear(); rd2.Clear(); dr.Clear(); dr2.Clear(); D_tb.Clear(); R_tb.Clear();
         }
 
+        private void json_read()
+        {
+            string json, path = "";
+
+            if (File.Exists("placement.json"))
+            {
+                string[] buf = File.ReadAllLines("placement.json");
+                if (buf.Length != 0)
+                    path = "placement.json";
+                else
+                    if (File.Exists("composition.json"))
+                    {
+                        buf = File.ReadAllLines("composition.json");
+                        if (buf.Length != 0)
+                            path = "composition.json";
+                    }
+            }
+                
+            if (path != "")
+            {
+                StreamReader sr = new StreamReader(path);
+                while (!sr.EndOfStream)
+                {
+                    json = sr.ReadLine();
+                    DRP p = JsonConvert.DeserializeObject<DRP>(json);
+                    newp.Add(p);
+                }
+                sr.Close();
+                cb_set(newp.Count);
+            }
+            else
+                MessageBox.Show("Нет входных данных! Выполните предыдущие этапы!");
+        }
+
+        private void cb_set(int n)
+        {
+            for (int i = 0; i < n; i++)
+                cb.Items.Add("Узел " + (i + 1));
+        }
+
         private void json_set()
         {
+            el_array = new int[newp[uzel_index].Uzel.Length];
+            for (int i = 0; i < newp[uzel_index].Uzel.Length; i++)
+            {
+                el_array[i] = newp[uzel_index].Uzel[i];
+            }
 
+            int c = 0;
+            for (int i = 0; i < el_array.Length; i++)
+            {
+                if (el_array[i] != 0)
+                {
+                    pos_visible(c, el_array[i]);
+                    drp_matr[pos_matr[0, c], pos_matr[1, c]] = el_array[i];
+                }
+                else
+                {
+                    drp_matr[pos_matr[0, c], pos_matr[1, c]] = el_array[i];
+                }
+                c++;
+            }
+
+            c = 0;
+            int el_count = (from e in el_array where e!=0 select e).Count();
+            d_matr = new int[el_count,el_count];
+            r_matr = new int[,] { { 0, 0, 6, 0, 0, 3, 3, 0, 0, 0, 0, 3, 0, 0, 0, 0 },
+                                  { 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 1, 0, 3, 0, 0, 0 },
+                                  { 6, 0, 0, 0, 0, 6, 6, 0, 0, 0, 3, 0, 0, 0, 3, 0 },
+                                  { 0, 3, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 6, 1 },
+                                  { 0, 0, 0, 0, 0, 1, 1, 1, 6, 6, 0, 3, 0, 0, 0, 0 },
+                                  { 3, 0, 6, 0, 1, 0, 0, 0, 1, 1, 2, 2, 0, 4, 5, 0 },
+                                  { 3, 0, 6, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 3, 0, 3 },
+                                  { 0, 3, 0, 6, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 5, 1 },
+                                  { 0, 0, 0, 0, 6, 1, 1, 1, 0, 6, 2, 1, 3, 0, 0, 2 },
+                                  { 0, 0, 0, 0, 6, 1, 1, 1, 6, 0, 0, 0, 0, 0, 1, 1 },
+                                  { 0, 1, 3, 0, 0, 2, 0, 0, 2, 0, 0, 1, 2, 0, 0, 2 },
+                                  { 3, 0, 0, 0, 3, 2, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0 },
+                                  { 0, 3, 0, 0, 0, 0, 1, 0, 3, 0, 2, 1, 0, 2, 4, 1 },
+                                  { 0, 0, 0, 0, 0, 4, 3, 0, 0, 0, 0, 0, 2, 0, 0, 1 },
+                                  { 0, 0, 3, 6, 0, 5, 0, 5, 0, 1, 0, 1, 4, 0, 0, 0 },
+                                  { 0, 0, 0, 1, 0, 0, 3, 1, 2, 1, 2, 0, 1, 1, 0, 0 } };
+            string probel = "   ", str = "";
+            rd.Text = rd2.Text = R_tb.Text = "";
+            dr.Text = dr2.Text = D_tb.Text = "";
+            for (int i = 0; i < positions.GetLength(1); i++)
+            {
+                if (positions[0, i] != 0)
+                {
+                    if (i == 15)
+                    {
+                        rd.AppendText("D" + positions[0, i].ToString());
+                        rd2.AppendText("D" + positions[0, i].ToString());
+                    }
+                    else
+                    {
+                        rd.AppendText("D" + positions[0, i].ToString() + "\n");
+                        rd2.AppendText("D" + positions[0, i].ToString() + "\n");
+                    }
+                    c++;
+                }
+            }
+            for (int i = 0; i < c; i++) //r_matr.GetLength(0)
+            {
+                for (int j = 0; j < c; j++) //r_matr.GetLength(1)
+                {
+                    str += r_matr[i, j].ToString() + probel;
+                }
+                if (i != 15)
+                {
+                    R_tb.AppendText(str + "\n");
+                }
+                else
+                {
+                    R_tb.AppendText(str);
+                }
+                str = "";
+            }
         }
 
         private void json_save()
         {
+            for(int i=0;i<newp.Count;i++)
+            {
+                string json = JsonConvert.SerializeObject(newp[i]);
+                sw.WriteLine(json);
+            }
             ex_tb.AppendText("\n\nФайл сохранен.");
         }
 
@@ -151,18 +305,19 @@ namespace PcadNew
                                   { 0, 0, 3, 6, 0, 5, 0, 5, 0, 1, 0, 1, 4, 0, 0, 0 },
                                   { 0, 0, 0, 1, 0, 0, 3, 1, 2, 1, 2, 0, 1, 1, 0, 0 } };
             string probel = "   ", str = "";
-            dr.Text = dr2.Text = "";
-            for (int i = 0; i < positions.Length; i++)
+            rd.Text = rd2.Text = R_tb.Text = "";
+            dr.Text = dr2.Text = D_tb.Text = "";
+            for (int i = 0; i < positions.GetLength(1); i++)
             {
                 if (i == 15)
                 {
-                    rd.AppendText("D" + positions[i].ToString());
-                    rd2.AppendText("D" + positions[i].ToString());
+                    rd.AppendText("D" + positions[0, i].ToString());
+                    rd2.AppendText("D" + positions[0, i].ToString());
                 }
                 else
                 {
-                    rd.AppendText("D" + positions[i].ToString() + "\n");
-                    rd2.AppendText("D" + positions[i].ToString() + "\n");
+                    rd.AppendText("D" + positions[0, i].ToString() + "\n");
+                    rd2.AppendText("D" + positions[0, i].ToString() + "\n");
                 }
             }
             for (int i = 0; i < r_matr.GetLength(0); i++)
@@ -203,19 +358,17 @@ namespace PcadNew
                     try //down
                     {
                         temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i, j + 1] + "]=";
-                        colorize(drp_matr[i, j], drp_matr[i, j + 1]);
-                        D1 = drp_matr[i, j]; D2 = drp_matr[i, j + 1];
                         if (drp_matr[i, j] != 0 && drp_matr[i, j + 1] != 0)
                         {
                             int w = 0;
 
-                            for (x = 0; x < d_matr.GetLength(0); x++)
+                            for (x = 1; x < d_matr.GetLength(0) + 1; x++)
                             {
-                                if (x + 1 != drp_matr[i, j] && x + 1 != drp_matr[i, j + 1])
+                                if (x != drp_matr[i, j] && x != drp_matr[i, j + 1])
                                 {
-                                    temp_L[w] = (r_matr[(drp_matr[i, j] - 1), x] - r_matr[(drp_matr[i, j + 1] - 1), x]) * (d_matr[(drp_matr[i, j] - 1), x] - d_matr[(drp_matr[i, j + 1] - 1), x]);
-                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x + 1).ToString() + '-' + 'R' + drp_matr[i, j + 1] + (x + 1).ToString() + ")+(D" + drp_matr[i, j] + (x + 1).ToString() + "-D" + drp_matr[i, j + 1] + (x + 1).ToString() + ")+";
-                                    temp_num = temp_num + '(' + r_matr[(drp_matr[i, j] - 1), x] + '-' + r_matr[(drp_matr[i, j + 1] - 1), x].ToString() + ")*(" + d_matr[(drp_matr[i, j] - 1), x].ToString() + '-' + d_matr[(drp_matr[i, j + 1] - 1), x].ToString() + ")+";
+                                    temp_L[w] = (r_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] - r_matr[search_pos(drp_matr[i, j + 1],0), search_pos(x,0)]) * (d_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] - d_matr[search_pos(drp_matr[i, j + 1],0), search_pos(x,0)]);
+                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x).ToString() + '-' + 'R' + drp_matr[i, j + 1] + (x).ToString() + ")+(D" + drp_matr[i, j] + (x).ToString() + "-D" + drp_matr[i, j + 1] + (x).ToString() + ")+";
+                                    temp_num = temp_num + '(' + r_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] + '-' + r_matr[search_pos(drp_matr[i, j + 1],0), search_pos(x,0)].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)].ToString() + '-' + d_matr[search_pos(drp_matr[i, j + 1],0), search_pos(x,0)].ToString() + ")+";
                                     w++;
                                 }
                             }
@@ -253,19 +406,17 @@ namespace PcadNew
                     try //right
                     {
                         temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i + 1, j] + "]=";
-                        colorize(drp_matr[i, j], drp_matr[i + 1, j]);
-                        D3 = drp_matr[i, j]; D4 = drp_matr[i + 1, j];
                         if (drp_matr[i, j] != 0 && drp_matr[i + 1, j] != 0)
                         {
                             int w = 0;
 
-                            for (x = 0; x < d_matr.GetLength(0); x++)
+                            for (x = 1; x < d_matr.GetLength(0) + 1; x++)
                             {
-                                if (x + 1 != drp_matr[i, j] && x + 1 != drp_matr[i + 1, j])
+                                if (x != drp_matr[i, j] && x != drp_matr[i + 1, j])
                                 {
-                                    temp_L[w] = (r_matr[(drp_matr[i, j] - 1), x] - r_matr[(drp_matr[i + 1, j] - 1), x]) * (d_matr[(drp_matr[i, j] - 1), x] - d_matr[(drp_matr[i + 1, j] - 1), x]);
-                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x + 1).ToString() + '-' + 'R' + drp_matr[i + 1, j] + (x + 1).ToString() + ")+(D" + drp_matr[i, j] + (x + 1).ToString() + "-D" + drp_matr[i + 1, j] + (x + 1).ToString() + ")+";
-                                    temp_num = temp_num + '(' + r_matr[(drp_matr[i, j] - 1), x] + '-' + r_matr[(drp_matr[i + 1, j] - 1), x].ToString() + ")*(" + d_matr[(drp_matr[i, j] - 1), x].ToString() + '-' + d_matr[(drp_matr[i + 1, j] - 1), x].ToString() + ")+";
+                                    temp_L[w] = (r_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] - r_matr[search_pos(drp_matr[i + 1, j],0), search_pos(x,0)]) * (d_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] - d_matr[search_pos(drp_matr[i + 1, j],0), search_pos(x,0)]);
+                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x).ToString() + '-' + 'R' + drp_matr[i + 1, j] + (x).ToString() + ")+(D" + drp_matr[i, j] + (x).ToString() + "-D" + drp_matr[i + 1, j] + (x).ToString() + ")+";
+                                    temp_num = temp_num + '(' + r_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)] + '-' + r_matr[search_pos(drp_matr[i + 1, j],0), search_pos(x,0)].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j],0), search_pos(x,0)].ToString() + '-' + d_matr[search_pos(drp_matr[i + 1, j],0), search_pos(x,0)].ToString() + ")+";
                                     w++;
                                 }
                             }
@@ -301,13 +452,16 @@ namespace PcadNew
                     }
                 }
             }
-            tb.AppendText("\n_____________________________________________________________________________________________________________________________________________________________________\n"); 
+            tb.AppendText("\n____________________________________________________________________________________________________________________________________________________________________________________________\n");
             if (pos_max[0, 0] > 0)
             {
-                ex_tb.AppendText( step.ToString() + ") К обмену D" + drp_matr[pos_max[0, 1], pos_max[0, 2]].ToString() + " и D" + drp_matr[pos_max[1, 1], pos_max[1, 2]].ToString() + ". ΔL=" + pos_max[0, 0].ToString()+"\n");
+                ex_tb.AppendText(step.ToString() + ") К обмену D" + drp_matr[pos_max[0, 1], pos_max[0, 2]].ToString() + " и D" + drp_matr[pos_max[1, 1], pos_max[1, 2]].ToString() + ". ΔL=" + pos_max[0, 0].ToString() + "\n");
+                D1 = drp_matr[pos_max[0, 1], pos_max[0, 2]]; D2 = drp_matr[pos_max[1, 1], pos_max[1, 2]];
+                colorize(D1, D2);
                 tb.ScrollToEnd();
                 if (auto_fl == true)
                 {
+                    uncolorize(drp_matr[pos_max[0, 1], pos_max[0, 2]], drp_matr[pos_max[1, 1], pos_max[1, 2]]);
                     drp_exchange();
                     D_calc();
                     Work();
@@ -319,26 +473,26 @@ namespace PcadNew
             }
             else
             {
+                uncolorize(drp_matr[pos_max[0, 1], pos_max[0, 2]], drp_matr[pos_max[1, 1], pos_max[1, 2]]);
                 ex_tb.AppendText("Нет элементов для обмена.");
                 tb.ScrollToEnd();
-                d_bt.IsEnabled = false;
                 n_bt.IsEnabled = false;
                 s_bt.IsEnabled = false;
-                json_save();
+                res_save();
             }
         }
 
         private void uncolorize(int d1, int d2)
         {
-            int a = search_pos(d1);
-            int b = search_pos(d2);
+            int a = search_pos(d1,1);
+            int b = search_pos(d2,1);
             p[a].Fill = p[b].Fill = new SolidColorBrush(System.Windows.Media.Colors.White);
         }
 
         private void colorize(int d1, int d2)
         {
-            int a = search_pos(d1);
-            int b = search_pos(d2);
+            int a = search_pos(d1,1);
+            int b = search_pos(d2,1);
             p[a].Fill = p[b].Fill = new SolidColorBrush(System.Windows.Media.Colors.Red);
         }
 
@@ -367,30 +521,35 @@ namespace PcadNew
                         {
                             if (drp_matr[a, b] != 0 && drp_matr[i, j] != 0)
                             {
-                                d_matr[drp_matr[i, j] - 1, drp_matr[a, b] - 1] = Math.Abs(Math.Abs(a - i) + Math.Abs(b - j));
-                                d_matr[drp_matr[a, b] - 1, drp_matr[i, j] - 1] = Math.Abs(Math.Abs(a - i) + Math.Abs(b - j));
+                                int x = search_pos(drp_matr[i, j],0), y = search_pos(drp_matr[a, b],0);
+                                d_matr[x, y] = d_matr[y, x] = Math.Abs(Math.Abs(a - i) + Math.Abs(b - j));
                             }
                         }
                 }
 
             string probel = "   ", str = "";
-            dr.Text = dr2.Text = "";
-            for (int i = 0; i < positions.Length; i++)
+            int c = 0;
+            dr.Text = dr2.Text = D_tb.Text = "";
+            for (int i = 0; i < d_matr.GetLength(0); i++)
             {
-                if (i == 15)
+                if (positions[0, i] != 0)
                 {
-                    dr.AppendText("D" + positions[i].ToString());
-                    dr2.AppendText("D" + positions[i].ToString());
-                }
-                else
-                {
-                    dr.AppendText("D" + positions[i].ToString() + "\n");
-                    dr2.AppendText("D" + positions[i].ToString() + "\n");
+                    if (i == 15)
+                    {
+                        dr.AppendText("D" + positions[0, i].ToString());
+                        dr2.AppendText("D" + positions[0, i].ToString());
+                    }
+                    else
+                    {
+                        dr.AppendText("D" + positions[0, i].ToString() + "\n");
+                        dr2.AppendText("D" + positions[0, i].ToString() + "\n");
+                    }
+                    c++;
                 }
             }
-            for (int i = 0; i < r_matr.GetLength(0); i++)
+            for (int i = 0; i < c; i++) //d_matr.GetLength(0)
             {
-                for (int j = 0; j < r_matr.GetLength(1); j++)
+                for (int j = 0; j < c; j++) //d_matr.GetLength(1)
                 {
                     str += d_matr[i, j].ToString() + probel;
                 }
@@ -408,9 +567,9 @@ namespace PcadNew
 
         private void pos_visible(int position, int el)
         {
-                pos[position].Visibility = System.Windows.Visibility.Visible;
-                pos[position].Text = "D" + el;
-                positions[position] = el;
+            pos[position].Visibility = System.Windows.Visibility.Visible;
+            pos[position].Text = "D" + el;
+            positions[0, position] = positions[1, position] = el;
         }
 
         private void pos_unvisible(int position)
@@ -423,27 +582,65 @@ namespace PcadNew
         {
             string buf;
             int pos_a = -1, pos_b = -1, ibuf = -1;
-            pos_a = search_pos(a);
-            pos_b = search_pos(b);
+            pos_a = search_pos(a, 1);
+            pos_b = search_pos(b, 1);
 
             buf = pos[pos_a].Text;
             pos[pos_a].Text = pos[pos_b].Text;
             pos[pos_b].Text = buf;
-            
-            pos_a = search_pos(drp_matr[pos_max[0, 1], pos_max[0, 2]]);
-            pos_b = search_pos(drp_matr[pos_max[1, 1], pos_max[1, 2]]);
-            ibuf = positions[pos_a];
-            positions[pos_a] = positions[pos_b];
-            positions[pos_b] = ibuf;
+
+            //pos_a = search_pos(drp_matr[pos_max[0, 1], pos_max[0, 2]]);
+            //pos_b = search_pos(drp_matr[pos_max[1, 1], pos_max[1, 2]]);
+            ibuf = positions[1, pos_a];
+            positions[1, pos_a] = positions[1, pos_b];
+            positions[1, pos_b] = ibuf;
         }
 
-        private int search_pos(int d)
+        private int search_pos(int d, int mode)
         {
             int pos = -1;
-            for (int i = 0; i < positions.Length; i++)
-                if (positions[i] == d)
-                    pos = i;
+            switch (mode)
+            {
+                case 0:
+                    for (int i = 0; i < positions.GetLength(1); i++)
+                        if (positions[0, i] == d)
+                        {
+                            pos = i;
+                            break;
+                        }
+                    break;
+                case 1:
+                    for (int i = 0; i < positions.GetLength(1); i++)
+                        if (positions[1, i] == d)
+                        {
+                            pos = i;
+                            break;
+                        }
+                    break;
+            }
             return pos;
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            sw.Close();
+        }
+
+        private void res_save()
+        {
+            for (int i = 0; i < positions.GetLength(1); i++)
+            {
+                res_uzel.Uzel[i] = positions[1, i];
+            }
+            resp.Add(res_uzel);
+            if (resp.Count == newp.Count)
+                json_save();
+        }
     }
+
+    public class DRP
+    {
+        public int[] Uzel { get; set; }
+    }
+
 }
