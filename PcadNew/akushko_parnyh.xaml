@@ -52,7 +52,7 @@
             <TextBlock Name="pos16" Margin="222,197,0,0" Visibility="Hidden">D16</TextBlock>
         </Canvas>
         <TextBox  Name="tb" IsReadOnly="True" Grid.Column="1" HorizontalAlignment="Left" Height="419" Margin="10,296,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="965" Grid.RowSpan="2" VerticalScrollBarVisibility="Auto"/>
-        <Button Name="s_bt" Content="Start" HorizontalAlignment="Left" Margin="8,104,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Click="Start_Click" Height="22"/>
+        <Button Name="s_bt" Content="Start" HorizontalAlignment="Left" Margin="8,104,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Click="Start_Click" Height="22" IsEnabled="False"/>
         <Button Name="n_bt" Content="Next" HorizontalAlignment="Left" Margin="8,144,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Click="Next_Click" Height="22" IsEnabled="False"/>
         <Button Name="c_bt" Content="Clear" HorizontalAlignment="Left" Margin="8,184,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Click="Clear_Click" Height="22" IsEnabled="False"/>
         <Label Name="auto_lab" Content="Автоматическое выполнение." HorizontalAlignment="Left" Margin="78,100,0,0" Grid.Row="1" VerticalAlignment="Top"/>
