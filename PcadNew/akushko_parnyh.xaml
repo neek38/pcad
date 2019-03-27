@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PcadNew.akushko_parnyh"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Метод парных перестановок" Height="768" Width="1366" Icon="Icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" Closed="Window_Closed">
+        Title="Метод парных перестановок" Height="768" Width="1366" Icon="Icon.ico" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowState="Maximized" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -88,7 +88,8 @@
         <ComboBox Name="cb" HorizontalAlignment="Left" Margin="8,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="138">
             <TextBlock>Демо данные</TextBlock>
         </ComboBox>
-        <Button Name="load" Content="Загрузить данные" HorizontalAlignment="Left" Margin="193,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="103" Click="Load_Click"/>
+        <Button Name="load" Content="Загрузить данные" HorizontalAlignment="Left" Margin="180,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="103" Click="Load_Click"/>
+        <Button Name="upd_json" Content="↻" HorizontalAlignment="Left" Margin="295,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="22" Click="upd_json_Click"/>
 
 
     </Grid>

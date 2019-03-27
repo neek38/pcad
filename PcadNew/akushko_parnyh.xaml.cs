@@ -47,7 +47,6 @@ namespace PcadNew
             p.Add(p9); p.Add(p10); p.Add(p11); p.Add(p12); p.Add(p13); p.Add(p14); p.Add(p15); p.Add(p16);
             pos.Add(pos1); pos.Add(pos2); pos.Add(pos3); pos.Add(pos4); pos.Add(pos5); pos.Add(pos6); pos.Add(pos7); pos.Add(pos8);
             pos.Add(pos9); pos.Add(pos10); pos.Add(pos11); pos.Add(pos12); pos.Add(pos13); pos.Add(pos14); pos.Add(pos15); pos.Add(pos16);
-            res_uzel.Uzel = new int[16];
             json_read();
         }
 
@@ -55,6 +54,20 @@ namespace PcadNew
         {
             positions = new int[2, 16];
             Clear_Click(sender, e);
+
+            if (cb.SelectedIndex == -1)
+            {
+                MessageBox.Show("Вы не выбрали данные! Попробуйте еще раз.","Упс!",MessageBoxButton.OK,MessageBoxImage.Exclamation);
+                return;
+            }
+
+            if (cb.SelectedIndex == 0)
+            {
+                uzel_index = 0;
+                demo_set();
+                demo_fl = true;
+                D_calc();
+            }
 
             if (uzel_done.Contains(cb.SelectedIndex) && demo_fl == false)//cb.SelectedIndex == uzel_index + 1)
             {
@@ -84,6 +97,7 @@ namespace PcadNew
 
         private void Start_Click(object sender, RoutedEventArgs e)
         {
+            demo_fl = false;
             auto_fl = true;
             n_bt.IsEnabled = false;
             c_bt.IsEnabled = true;
@@ -170,7 +184,11 @@ namespace PcadNew
                 }
                 sr.Close();
                 for (int i = 0; i < newp.Count; i++)
+                {
+                    res_uzel = new DRP();
+                    res_uzel.Uzel = new int[16];
                     resp.Add(res_uzel);
+                }
                 uzel_done = new int[newp.Count];
                 cb_set(newp.Count);
             }
@@ -230,57 +248,71 @@ namespace PcadNew
             string probel = "   ", str = "";
             rd.Text = rd2.Text = R_tb.Text = "";
             dr.Text = dr2.Text = D_tb.Text = "";
+            //for (int i = 0; i < positions.GetLength(1); i++)
+            //{
+            //    if (positions[0, i] != 0)
+            //    {
+            //        if (i == 15)
+            //        {
+            //            rd.AppendText("D" + positions[0, i].ToString());
+            //            rd2.AppendText("D" + positions[0, i].ToString());
+            //        }
+            //        else
+            //        {
+            //            rd.AppendText("D" + positions[0, i].ToString() + "\n");
+            //            rd2.AppendText("D" + positions[0, i].ToString() + "\n");
+            //        }
+            //        c++;
+            //    }
+            //}
+
             for (int i = 0; i < positions.GetLength(1); i++)
             {
-                if (positions[0, i] != 0)
+                if (i == 15)
                 {
-                    if (i == 15)
-                    {
-                        rd.AppendText("D" + positions[0, i].ToString());
-                        rd2.AppendText("D" + positions[0, i].ToString());
-                    }
-                    else
-                    {
-                        rd.AppendText("D" + positions[0, i].ToString() + "\n");
-                        rd2.AppendText("D" + positions[0, i].ToString() + "\n");
-                    }
-                    c++;
+                    rd.AppendText("D" + positions[0, i].ToString());
+                    rd2.AppendText("D" + positions[0, i].ToString());
+                }
+                else
+                {
+                    rd.AppendText("D" + positions[0, i].ToString() + "\n");
+                    rd2.AppendText("D" + positions[0, i].ToString() + "\n");
                 }
             }
 
-            for (int i = 0; i < el_count; i++)
-            {
-                for (int j = 0; j < el_count; j++)
-                {
-                    str += r_matr[el_array[i] - 1, j].ToString() + probel;
-                }
-                    if (i != 15)
-                    {
-                        R_tb.AppendText(str + "\n");
-                    }
-                    else
-                    {
-                        R_tb.AppendText(str);
-                    }
-                str = "";
-            }
-            
-            //for (int i = 0; i < c; i++) //r_matr.GetLength(0)
+            //for (int i = 0; i < el_count; i++)
             //{
-            //    for (int j = 0; j < c; j++) //r_matr.GetLength(1)
+            //    for (int j = 0; j < el_count; j++)
             //    {
-            //        str += r_matr[i, j].ToString() + probel;
+            //        str += r_matr[el_array[i] - 1, j].ToString() + probel;
             //    }
-            //    if (i != 15)
-            //    {
-            //        R_tb.AppendText(str + "\n");
-            //    }
-            //    else
-            //    {
-            //        R_tb.AppendText(str);
-            //    }
+            //        if (i != 15)
+            //        {
+            //            R_tb.AppendText(str + "\n");
+            //        }
+            //        else
+            //        {
+            //            R_tb.AppendText(str);
+            //        }
             //    str = "";
             //}
+
+            for (int i = 0; i < r_matr.GetLength(0); i++) //r_matr.GetLength(0)  //c 
+            {
+                for (int j = 0; j < r_matr.GetLength(1); j++) //r_matr.GetLength(1)  //c 
+                {
+                    str += r_matr[i, j].ToString() + probel;
+                }
+                if (i != 15)
+                {
+                    R_tb.AppendText(str + "\n");
+                }
+                else
+                {
+                    R_tb.AppendText(str);
+                }
+                str = "";
+            }
         }
 
         private void json_save()
@@ -291,6 +323,7 @@ namespace PcadNew
                 sw.WriteLine(json);
             }
             ex_tb.AppendText("\n\nФайл сохранен.");
+            sw.Close();
         }
 
         private void res_save()
@@ -300,7 +333,7 @@ namespace PcadNew
                 resp[uzel_index].Uzel[i] = positions[1, i];
             }
             uzel_done[uzel_index] = uzel_index + 1;
-            if (uzel_index == resp.Count)
+            if (uzel_index == resp.Count-1)
                 json_save();
         }
 
@@ -384,107 +417,119 @@ namespace PcadNew
             step++;
             tb.Text += "\n Шаг " + step.ToString() + "\n";
 
-            for (i = 0; i < drp_matr.GetLength(0); i++)
+            int el_count = el_array.Length;
+            for (int p = el_array.Length - 1; p > 0; p--)
             {
-                for (j = 0; j < drp_matr.GetLength(1); j++)
+                if (el_array[p] == 0)
+                    el_count--;
+                else if (el_array[p] != 0)
+                    break;
+            }
+
+
+                for (i = 0; i < drp_matr.GetLength(0); i++)
                 {
-                    try //down
+                    for (j = 0; j < drp_matr.GetLength(1); j++)
                     {
-                        temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i, j + 1] + "]=";
-                        if (drp_matr[i, j] != 0 && drp_matr[i, j + 1] != 0)
+                        try //down
                         {
-                            int w = 0;
-
-                            for (x = 1; x < d_matr.GetLength(0) + 1; x++)
+                            temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i, j + 1] + "]=";
+                            if (drp_matr[i, j] != 0 && drp_matr[i, j + 1] != 0)
                             {
-                                if (x != drp_matr[i, j] && x != drp_matr[i, j + 1])
+                                int w = 0;
+
+                                for (x = 0; x < d_matr.GetLength(0); x++)
                                 {
-                                    temp_L[w] = (r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - r_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - d_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)]);
-                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x).ToString() + '-' + 'R' + drp_matr[i, j + 1] + (x).ToString() + ")+(D" + drp_matr[i, j] + (x).ToString() + "-D" + drp_matr[i, j + 1] + (x).ToString() + ")+";
-                                    temp_num = temp_num + '(' + r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] + '-' + r_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)].ToString() + '-' + d_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)].ToString() + ")+";
-                                    w++;
+                                    if (el_array[x] != drp_matr[i, j] && el_array[x] != drp_matr[i, j + 1] && el_array[x] != 0)
+                                    {
+                                        //temp_L[w] = (r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - r_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - d_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(x, 0)]);
+                                        temp_L[w] = (r_matr[drp_matr[i, j] - 1, el_array[x]-1] - r_matr[drp_matr[i, j + 1] - 1, el_array[x]-1]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(el_array[x], 0)] - d_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(el_array[x], 0)]);
+                                        temp_char = temp_char + "(R" + drp_matr[i, j] + (x + 1).ToString() + '-' + 'R' + drp_matr[i, j + 1] + (x + 1).ToString() + ")*(D" + drp_matr[i, j] + (x + 1).ToString() + "-D" + drp_matr[i, j + 1] + (x + 1).ToString() + ")+";
+                                        temp_num = temp_num + '(' + r_matr[drp_matr[i, j] - 1, el_array[x]-1] + '-' + r_matr[drp_matr[i, j + 1] - 1, el_array[x]-1].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j], 0), search_pos(el_array[x], 0)].ToString() + '-' + d_matr[search_pos(drp_matr[i, j + 1], 0), search_pos(el_array[x], 0)].ToString() + ")+";
+                                        w++;
+                                    }
                                 }
+
+                                for (int z = 0; z < temp_L.Length; z++)
+                                {
+                                    ans += temp_L[z];
+                                }
+
+                                res = ans.ToString();
+
+                                if (ans > pos_max[0, 0])
+                                {
+                                    pos_max[0, 0] = ans;
+                                    pos_max[0, 1] = i; //столбцы
+                                    pos_max[0, 2] = j; //строки
+                                    pos_max[1, 1] = i; //столбцы
+                                    pos_max[1, 2] = j + 1; //строки
+                                }
+
+                                temp_char = temp_char.TrimEnd(new char[] { '+' });
+                                temp_num = temp_num.TrimEnd(new char[] { '+' });
+
+                                tb.Text += "\n" + temp_char + "=" + temp_num + "=" + res.ToString() + "\n";
+                                ans = 0;
+                                temp_char = "";
+                                temp_num = "";
                             }
-
-                            for (int z = 0; z < temp_L.Length; z++)
-                            {
-                                ans += temp_L[z];
-                            }
-
-                            res = ans.ToString();
-
-                            if (ans > pos_max[0, 0])
-                            {
-                                pos_max[0, 0] = ans;
-                                pos_max[0, 1] = i; //столбцы
-                                pos_max[0, 2] = j; //строки
-                                pos_max[1, 1] = i; //столбцы
-                                pos_max[1, 2] = j + 1; //строки
-                            }
-
-                            temp_char = temp_char.TrimEnd(new char[] { '+' });
-                            temp_num = temp_num.TrimEnd(new char[] { '+' });
-
-                            tb.Text += "\n" + temp_char + "=" + temp_num + "=" + res.ToString() + "\n";
-                            ans = 0;
-                            temp_char = "";
-                            temp_num = "";
                         }
-                    }
-                    catch (Exception)
-                    {
-                        temp_char = "";
-                    }
-
-                    try //right
-                    {
-                        temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i + 1, j] + "]=";
-                        if (drp_matr[i, j] != 0 && drp_matr[i + 1, j] != 0)
+                        catch (Exception)
                         {
-                            int w = 0;
-
-                            for (x = 1; x < d_matr.GetLength(0) + 1; x++)
-                            {
-                                if (x != drp_matr[i, j] && x != drp_matr[i + 1, j])
-                                {
-                                    temp_L[w] = (r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - r_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - d_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)]);
-                                    temp_char = temp_char + "(R" + drp_matr[i, j] + (x).ToString() + '-' + 'R' + drp_matr[i + 1, j] + (x).ToString() + ")+(D" + drp_matr[i, j] + (x).ToString() + "-D" + drp_matr[i + 1, j] + (x).ToString() + ")+";
-                                    temp_num = temp_num + '(' + r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] + '-' + r_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)].ToString() + '-' + d_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)].ToString() + ")+";
-                                    w++;
-                                }
-                            }
-
-                            for (int z = 0; z < temp_L.Length; z++)
-                            {
-                                ans += temp_L[z];
-                            }
-
-                            res = ans.ToString();
-
-                            if (ans > pos_max[0, 0])
-                            {
-                                pos_max[0, 0] = ans;
-                                pos_max[0, 1] = i; //столбцы
-                                pos_max[0, 2] = j; //строки
-                                pos_max[1, 1] = i + 1; //столбцы
-                                pos_max[1, 2] = j; //строки
-                            }
-
-                            temp_char = temp_char.TrimEnd(new char[] { '+' });
-                            temp_num = temp_num.TrimEnd(new char[] { '+' });
-
-                            tb.Text += "\n" + temp_char + "=" + temp_num + "=" + res.ToString() + "\n";
-                            ans = 0;
                             temp_char = "";
-                            temp_num = "";
                         }
-                    }
-                    catch (Exception)
-                    {
-                        temp_char = "";
+
+                        try //right
+                        {
+                            temp_char = "ΔL[" + drp_matr[i, j] + "][" + drp_matr[i + 1, j] + "]=";
+                            if (drp_matr[i, j] != 0 && drp_matr[i + 1, j] != 0)
+                            {
+                                int w = 0;
+
+                                for (x = 0; x < d_matr.GetLength(0); x++)
+                                {
+                                    if (el_array[x] != drp_matr[i, j] && el_array[x] != drp_matr[i + 1, j] && el_array[x] != 0)
+                                    {
+                                        //temp_L[w] = (r_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - r_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(x, 0)] - d_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(x, 0)]);
+                                        temp_L[w] = (r_matr[drp_matr[i, j] - 1, el_array[x]-1] - r_matr[drp_matr[i + 1, j] - 1, el_array[x]-1]) * (d_matr[search_pos(drp_matr[i, j], 0), search_pos(el_array[x], 0)] - d_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(el_array[x], 0)]);
+                                        temp_char = temp_char + "(R" + drp_matr[i, j] + (x + 1).ToString() + '-' + 'R' + drp_matr[i + 1, j] + (x + 1).ToString() + ")*(D" + drp_matr[i, j] + (x + 1).ToString() + "-D" + drp_matr[i + 1, j] + (x + 1).ToString() + ")+";
+                                        temp_num = temp_num + '(' + r_matr[drp_matr[i, j] - 1, el_array[x]-1] + '-' + r_matr[drp_matr[i + 1, j] - 1, el_array[x]-1].ToString() + ")*(" + d_matr[search_pos(drp_matr[i, j], 0), search_pos(el_array[x], 0)].ToString() + '-' + d_matr[search_pos(drp_matr[i + 1, j], 0), search_pos(el_array[x], 0)].ToString() + ")+";
+                                        w++;
+                                    }
+                                }
+
+                                for (int z = 0; z < temp_L.Length; z++)
+                                {
+                                    ans += temp_L[z];
+                                }
+
+                                res = ans.ToString();
+
+                                if (ans > pos_max[0, 0])
+                                {
+                                    pos_max[0, 0] = ans;
+                                    pos_max[0, 1] = i; //столбцы
+                                    pos_max[0, 2] = j; //строки
+                                    pos_max[1, 1] = i + 1; //столбцы
+                                    pos_max[1, 2] = j; //строки
+                                }
+
+                                temp_char = temp_char.TrimEnd(new char[] { '+' });
+                                temp_num = temp_num.TrimEnd(new char[] { '+' });
+
+                                tb.Text += "\n" + temp_char + "=" + temp_num + "=" + res.ToString() + "\n";
+                                ans = 0;
+                                temp_char = "";
+                                temp_num = "";
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            temp_char = "";
+                        }
                     }
                 }
-            }
             tb.AppendText("\n____________________________________________________________________________________________________________________________________________________________________________________________\n");
             if (pos_max[0, 0] > 0)
             {
@@ -511,7 +556,8 @@ namespace PcadNew
                 tb.ScrollToEnd();
                 n_bt.IsEnabled = false;
                 s_bt.IsEnabled = false;
-                res_save();
+                if (demo_fl == false)
+                    res_save();
             }
         }
 
@@ -654,7 +700,24 @@ namespace PcadNew
             return pos;
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void upd_json_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Вы хотите обновить входные данные? Это обнулит все данные.", "Вы уверены?!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+            if (result == MessageBoxResult.Yes)
+            {
+                sw.Close();
+                for (int i = cb.Items.Count - 1; i > 0; i--)
+                    cb.Items.RemoveAt(i);
+                Clear_Click(sender, e);
+                newp = new List<DRP>();
+                resp = new List<DRP>();
+                json_read();
+            }
+            else
+                return;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             sw.Close();
         }
