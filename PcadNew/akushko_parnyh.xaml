@@ -90,6 +90,8 @@
         </ComboBox>
         <Button Name="load" Content="Загрузить данные" HorizontalAlignment="Left" Margin="180,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="103" Click="Load_Click"/>
         <Button Name="upd_json" Content="↻" HorizontalAlignment="Left" Margin="295,64,0,0" Grid.Row="1" VerticalAlignment="Top" Width="22" Click="upd_json_Click"/>
+        <Button x:Name="Help" Content="Help" HorizontalAlignment="Left" Margin="8,224,0,0" Grid.Row="1" VerticalAlignment="Top" Width="66" Click="Help_Click"/>
+        <Label Content="Помощь" HorizontalAlignment="Left" Margin="78,220,0,0" Grid.Row="1" VerticalAlignment="Top"/>
 
 
     </Grid>
