@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace PcadNew
 {
@@ -20,6 +22,12 @@ namespace PcadNew
     public partial class WindowShaffera : Window
     {
         List<TextBlock> TB = new List<TextBlock>();   //список текстбоксов.
+        List<DRP1> newp = new List<DRP1>();
+        List<DRP1> resp = new List<DRP1>();
+        List<U_R> newr = new List<U_R>();
+        List<bool> flag = new List<bool>();
+        DRP1 prod = new DRP1();
+        DRP1 prod1 = new DRP1();
         public WindowShaffera()
         {
             InitializeComponent();
@@ -33,12 +41,18 @@ namespace PcadNew
             WindowShaffera_Closed(this, EventArgs.Empty);
 
         }
-        int[,] R;
-        int[] pos;
+        int Work_flag = 0, Work_Count = 0;
+        int[,] R,Rbig;
+        int[,] R_matr;
+        int[] pos = new int[17];
         int L12, L23, L34;
         bool end_po_stolbcam, end_po_strokam, obmen = false;
         private void Demo_Start(object sender, RoutedEventArgs e)
         {
+            Stolbci.Visibility = Visibility.Hidden;
+            Stroki.Visibility = Visibility.Hidden;
+            Table.Clear();
+            Work_flag = 0;
             R = new int[9, 9]        { { 0, 0, 0, 0, 0, 0, 0, 0, 0 },  //матрица расстояний размерностью на один больше,что бы счёт вёлся с единицы.
                                        { 0, 0, 0, 0, 2, 0, 1, 2, 0 },
                                        { 0, 0, 0, 1, 0, 2, 0, 0, 1 },
@@ -56,11 +70,18 @@ namespace PcadNew
             Step_Work.IsEnabled = false; DoAll_Work.IsEnabled = false;
             end_po_stolbcam = end_po_strokam = false;
             MatrixToTextbox(R);
-            TextBox1.Text += "НАЧАЛО:  \n"; TextBox1.ScrollToEnd();
+            TextBox1.Text += "НАЧАЛО Демо режим:  \n"; TextBox1.ScrollToEnd();
             Start_Demo.IsEnabled = false;
         }
         private void Do_All(object sender, RoutedEventArgs e)
         {
+            if (Work_flag != 0)
+            {
+                if (flag[ComboBox1.SelectedIndex] == true)
+                {
+                    MessageBox.Show("Алгоритм для этого узла уже выполнен!");
+                }
+            }
             if (end_po_stolbcam == true && end_po_strokam == true)
             {
                 MessageBox.Show("Алгоритм закончен!");
@@ -72,9 +93,32 @@ namespace PcadNew
                 while (end_po_strokam == false)    //пока не закончим по строкам
                     Shaffera_po_strocam(R, pos);
             }
+            if(Work_Count == ComboBox1.Items.Count && Work_flag != 0)
+            {
+                DRP1 strok;
+                TextBox1.Text += "Все узлы закончены  \n"; TextBox1.ScrollToEnd();
+                Step_Work.IsEnabled = false; DoAll_Work.IsEnabled = false;
+                Start_Work.IsEnabled = true;
+                StreamWriter sw = new StreamWriter("InputUz.json");
+                for (int k = 0; k < resp.Count; k++)
+                {
+                    strok = resp[k];
+                    string rmat = JsonConvert.SerializeObject(strok);
+                    sw.WriteLine(rmat);
+                }
+                sw.Close();
+                MessageBox.Show("Файл сохранён");
+            }
         }
         private void Step(object sender, RoutedEventArgs e)
         {
+            if (Work_flag != 0)
+            {
+                if (flag[ComboBox1.SelectedIndex] == true)
+                {
+                    MessageBox.Show("Алгоритм для этого узла уже выполнен!");
+                }
+            }
             if (end_po_stolbcam == true && end_po_strokam == true)
             {
                 MessageBox.Show("Алгоритм закончен!");
@@ -90,11 +134,35 @@ namespace PcadNew
                 if (end_po_strokam == false && end_po_stolbcam == true)  //ждём когда закончатся столбцы и делаем по строкам
                     Shaffera_po_strocam(R, pos);
             }
+            if (Work_Count == ComboBox1.Items.Count && Work_flag != 0)
+            {
+                TextBox1.Text += "Все узлы закончены  \n"; TextBox1.ScrollToEnd();
+                Step_Work.IsEnabled = false; DoAll_Work.IsEnabled = false;
+                Start_Work.IsEnabled = true;
+            }
         }
 
         private void Work_Start(object sender, RoutedEventArgs e)
         {
-
+            flag.Clear();
+            Table.Clear();
+            Stolbci.Visibility = Visibility.Hidden;
+            Stroki.Visibility = Visibility.Hidden;
+            //----------------------------------Обнуление ДРП---------------------------------------------------------------------------------
+            TB1.Text = TB2.Text = TB3.Text = TB4.Text = TB5.Text = TB6.Text = TB7.Text = TB8.Text =
+            TB9.Text = TB10.Text = TB11.Text = TB12.Text = TB13.Text = TB14.Text = TB15.Text = TB16.Text = "";
+            Work_Count = 0;
+            R = null;  newp.Clear(); resp.Clear(); newr.Clear(); 
+            Work_flag = 1;
+            ComboBox1.IsEnabled = true; Load_Uzel.IsEnabled = true;
+            ComboBox1.Items.Clear();
+            json_set();
+            for (int c = 0; c < newp.Count; c++)
+                ComboBox1.Items.Add("Узел: " + (c + 1));
+            Step_Demo.IsEnabled = false; DoAll_Demo.IsEnabled = false; Start_Work.IsEnabled = false;
+            Step_Work.IsEnabled = false; DoAll_Work.IsEnabled = false;
+            end_po_stolbcam = end_po_strokam = false;
+            TextBox1.Text += "НАЧАЛО Рабочий режим:   \nВыберите узел и нажмитье \"Загрузить\"  \n"; TextBox1.ScrollToEnd();
         }
         private void Shaffera_po_stolbcam(int[,] R, int[] pos)
         {
@@ -189,6 +257,12 @@ namespace PcadNew
                     end_po_stolbcam = true;
                     TextBox1.Text += "Положительных L больше нет,переходим к строкам \n\n\n"; TextBox1.ScrollToEnd();
                 }
+
+            }
+            else
+            {
+                end_po_stolbcam = true;
+                TextBox1.Text += "Столбцов меньше 3-х, переходим к строкам \n\n\n"; TextBox1.ScrollToEnd();
             }
         }
         private void Shaffera_po_strocam(int[,] R, int[] pos)
@@ -283,9 +357,38 @@ namespace PcadNew
                 {
                     end_po_strokam = true;
                     Start_Demo.IsEnabled = true;
-                    Start_Work.IsEnabled = true;
+                    if(Work_flag == 0)
+                        Start_Work.IsEnabled = true;
                     TextBox1.Text += "Положительных L больше нет \nАлгоритм закончен!\n\n"; TextBox1.ScrollToEnd();
+                    if (Work_flag != 0)
+                    {
+                        Work_Count++;
+                        //добавление
+                        int[] buf1 = new int[16];
+                        for (int i = 0; i < buf1.Length; i++)
+                            buf1[i] = pos[i + 1];
+                        DRP1 strok = new DRP1();
+                        strok.Uzel = buf1;
+                        strok.Name = ComboBox1.SelectedIndex + 1;
+                        resp.Add(strok);
+                    }
+                    if(Work_Count != ComboBox1.Items.Count)
+                    {
+                        TextBox1.Text += "Перейдите к следующему узлу!\n"; TextBox1.ScrollToEnd();
+                        flag[ComboBox1.SelectedIndex] = true;
+                        
+                        
+                    }
+
                 }
+            }
+            else
+            {
+                end_po_strokam = true;
+                Start_Demo.IsEnabled = true;
+                if (Work_flag == 0)
+                    Start_Work.IsEnabled = true;
+                TextBox1.Text += "Строк меньше 3-х \nАлгоритм закончен!\n\n"; TextBox1.ScrollToEnd();
             }
         }
         private void Formula1(int[,] R, int[] pos, int[] T, string[] formula, string[] value, int fl)
@@ -393,7 +496,7 @@ namespace PcadNew
                     TB[i].Text = "D" + pos[i].ToString();
             }
         }
-        private void MatrixToTextbox(int[,] R)
+        private void MatrixToTextbox(int[,] R, int[] pos = null)
         {
             if (R.GetLength(1) < 12) Table.FontSize = 16;   //размер шрифта в зависимости от кол-ва элементов матрицы.
             if (R.GetLength(1) > 12) Table.FontSize = 14;
@@ -401,36 +504,190 @@ namespace PcadNew
             if (R.GetLength(1) > 16) Table.FontSize = 11;
             string probel;
             Table.Text = "    ";
-            for (int i = 1; i < R.GetLength(1); i++)        //первая строчка с D-шками
+            if(Work_flag !=0)
             {
-                if (i > 9)
-                    probel = " ";
-                else
-                    probel = "  ";
-                Table.Text += "D" + i.ToString() + probel;
-            }
-            Table.Text += "\n";
-            for (int row = 1; row < R.GetLength(0); row++)  //каждая следующая строка
-            {
-                if (row > 9)
-                    probel = " ";
-                else
-                    probel = "  ";
-                Table.Text += "D" + row.ToString() + probel;
-                for (int col = 1; col < R.GetLength(1); col++) //каждый элемент строки
+                for (int i = 0; i < R.GetLength(1); i++)        //первая строчка с D-шками
                 {
-                    if (R[row, col] > 9)
-                        probel = "  ";
+                    if (i > 9)
+                        probel = " ";
                     else
-                        probel = "   ";
-                    Table.Text += R[row, col] + probel;
+                        probel = "  ";
+                    Table.Text += "D" + pos[i].ToString() + probel;
                 }
                 Table.Text += "\n";
+                for (int row = 0; row < R.GetLength(0); row++)  //каждая следующая строка
+                {
+                    if (pos[row] > 9)
+                        probel = " ";
+                    else
+                        probel = "  ";
+                    Table.Text += "D" + pos[row].ToString() + probel;
+                    for (int col = 0; col < R.GetLength(1); col++) //каждый элемент строки
+                    {
+                        if (R[row, col] > 9)
+                            probel = "  ";
+                        else
+                            probel = "   ";
+                        Table.Text += R[row, col] + probel;
+                    }
+                    Table.Text += "\n";
+                }
+            }
+            else
+            {
+                for (int i = 1; i < R.GetLength(1); i++)        //первая строчка с D-шками
+                {
+                    if (i > 9)
+                        probel = " ";
+                    else
+                        probel = "  ";
+                    Table.Text += "D" + i.ToString() + probel;
+                }
+                Table.Text += "\n";
+                for (int row = 1; row < R.GetLength(0); row++)  //каждая следующая строка
+                {
+                    if (row > 9)
+                        probel = " ";
+                    else
+                        probel = "  ";
+                    Table.Text += "D" + row.ToString() + probel;
+                    for (int col = 1; col < R.GetLength(1); col++) //каждый элемент строки
+                    {
+                        if (R[row, col] > 9)
+                            probel = "  ";
+                        else
+                            probel = "   ";
+                        Table.Text += R[row, col] + probel;
+                    }
+                    Table.Text += "\n";
+                }
             }
         }
+
+        private void Load_Uzel_Click(object sender, RoutedEventArgs e)
+        {
+            int i = ComboBox1.SelectedIndex;
+            if (i != -1)
+            {
+                int[] p = newp[i].Uzel;
+                pos = new int[17];
+                pos[0] = 0;
+                for (int j = 0; j < p.Length; j++)
+                {
+                    pos[j + 1] = p[j];
+                }
+                R = new int[Rbig.GetLength(0) + 1, Rbig.GetLength(0) + 1];
+                for (int j = 0; j < R.GetLength(0); j++)
+                    R[0, j] = 0;
+                for (int j = 0; j < Rbig.GetLength(0); j++)
+                {
+                    R[j, 0] = 0;
+                    for (int k = 0; k < Rbig.GetLength(0); k++)
+                    {
+
+                        R[j + 1, k + 1] = Rbig[j,k];
+                    }
+                    
+                }
+                DRP();
+                Step_Work.IsEnabled = true; DoAll_Work.IsEnabled = true;
+                end_po_stolbcam = end_po_strokam = false;
+                //------------------визуал------------------
+                int[] o = newp[i].Uzel;
+                i = 0;
+                int n = 0, s = 0;
+                int[] iw = new int[Rbig.GetLength(0)];
+                for (i = 0; i < p.Length; i++)
+                    if (p[i] != 0)
+                        n++;
+                int[] posit_mas = new int[n];
+                n = 0;
+                for (i = 0; i < p.Length; i++)
+                    if (p[i] != 0)
+                    { posit_mas[n] = p[i]; n++; }
+                Array.Sort(posit_mas);
+                n = posit_mas.Length;
+                R_matr = new int[n, n];
+                for (i = 0; i < posit_mas.Length; i++)
+                    for (n = 0, s=0; n < Rbig.GetLength(0); n++)
+                        if (n+1 == posit_mas[i])
+                        {
+                            for (int u = 0; u < Rbig.GetLength(0); u++)
+                                iw[u] = Rbig[n, u];
+                            for (int z = 0; z < iw.Length; z++)
+                                for (int y = 0; y < posit_mas.Length; y++)
+                                    if (z == posit_mas[y] - 1)
+                                    { R_matr[i, s] = iw[z]; s++; }
+                        }
+                MatrixToTextbox(R_matr, posit_mas);
+            }
+            else
+            {
+                MessageBox.Show("Выберите узел!");
+                return;
+            }
+            
+        }
+
         private void Clear_TextBox1(object sender, RoutedEventArgs e)
         {
+            //----------------------------------Обнуление ДРП---------------------------------------------------------------------------------
+            TB1.Text = TB2.Text = TB3.Text = TB4.Text = TB5.Text = TB6.Text = TB7.Text = TB8.Text =
+            TB9.Text = TB10.Text = TB11.Text = TB12.Text = TB13.Text = TB14.Text = TB15.Text = TB16.Text = "";
+            Start_Work.IsEnabled = Start_Demo.IsEnabled = true;
+            DoAll_Demo.IsEnabled = Step_Demo.IsEnabled = DoAll_Work.IsEnabled = Step_Work.IsEnabled = ComboBox1.IsEnabled = Load_Uzel.IsEnabled = false;
+            Stolbci.Visibility = Visibility.Hidden;
+            Stroki.Visibility = Visibility.Hidden;
             TextBox1.Clear();
+            Table.Clear();
         }
-    }
+        public class DRP1
+        {
+            public int[] Uzel { get; set; }
+            public int Name { get; set; }
+        }
+        public class U_R
+        {
+            public int[] R_str { get; set; }
+            public int Name { get; set; }
+        }
+        private void json_set()
+        {
+            string json = JsonConvert.SerializeObject(prod);
+            string json1 = JsonConvert.SerializeObject(prod1);
+            newr.Clear();
+            StreamReader sr = new StreamReader("InputUz.json");
+            for (int i = 0; !sr.EndOfStream; i++)
+            {
+
+                json1 = sr.ReadLine();
+                DRP1 p = JsonConvert.DeserializeObject<DRP1>(json1);
+                newp.Add(p);
+                flag.Add(false);
+            }
+            sr.Close();
+            sr = new StreamReader("InputR_mat.json");
+            for (int i = 0; !sr.EndOfStream; i++)
+            {
+
+                json1 = sr.ReadLine();
+                int[,] pr = JsonConvert.DeserializeObject<int[,]>(json1);
+                Rbig = pr;
+            }
+            sr.Close();
+        }
+        private void json_result()
+        {
+            DRP1 strok = new DRP1();
+            strok.Uzel = pos;
+            strok.Name = ComboBox1.SelectedIndex;
+            StreamWriter sw = new StreamWriter("Razm_Rezult.json");
+            for (int k = 0; k < resp.Count; k++)
+            {
+                string rmat = JsonConvert.SerializeObject(strok);
+                sw.WriteLine(rmat);
+            }
+            sw.Close();
+        }
+    }   
 }

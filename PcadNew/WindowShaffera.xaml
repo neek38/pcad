@@ -33,39 +33,41 @@
         <Rectangle Grid.Column="0" Grid.Row="0" Fill="White" HorizontalAlignment="Left" Height="30" Margin="79,178,0,0" Stroke="Black" VerticalAlignment="Top" Width="30"/>
         <Rectangle Grid.Column="0" Grid.Row="0" Fill="White" HorizontalAlignment="Left" Height="30" Margin="119,178,0,0" Stroke="Black" VerticalAlignment="Top" Width="30"/>
         <Rectangle Grid.Column="0" Grid.Row="0" Fill="White" HorizontalAlignment="Left" Height="30" Margin="159,178,0,0" Stroke="Black" VerticalAlignment="Top" Width="30"/>
-        <GroupBox Header="Демо режим" HorizontalAlignment="Left" Height="100" Margin="57,14,0,0" Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" Width="243" FontSize="14">
+        <GroupBox Header="Демо режим" HorizontalAlignment="Left" Height="100" Margin="57,276,0,0" Grid.Column="0" VerticalAlignment="Top" Width="243" FontSize="14" Grid.RowSpan="2">
             <Grid HorizontalAlignment="Left" Height="80"  VerticalAlignment="Top" Width="233" Margin="0,0,-2,-5"  >
                 <Button Name="Start_Demo" Content="Запуск" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="97" Height="63" FontFamily="Calibri" FontSize="20" Click="Demo_Start"/>
                 <Button Name="Step_Demo" Content="Шаг" HorizontalAlignment="Left" Margin="136,7,0,0" VerticalAlignment="Top" Width="87" Height="24" IsEnabled="False" Click="Step"/>
                 <Button Name="DoAll_Demo" Content="Сделать всё" HorizontalAlignment="Left" Margin="136,44,0,0" VerticalAlignment="Top" Width="87" IsEnabled="False" Click="Do_All"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Рабочий режим" HorizontalAlignment="Left" Height="100" Margin="328,14,0,0" Grid.Row="1" VerticalAlignment="Top" Width="243" FontSize="14">
-            <Grid HorizontalAlignment="Left" Height="80"  VerticalAlignment="Top" Width="233" Margin="0,0,-2,-5"  >
+        <GroupBox Header="Рабочий режим" HorizontalAlignment="Left" Height="134" Margin="314,276,0,0" VerticalAlignment="Top" Width="257" FontSize="14" Grid.RowSpan="2">
+            <Grid HorizontalAlignment="Left" Height="112"  VerticalAlignment="Top" Width="247" Margin="0,0,-2,-4"  >
                 <Button Name="Start_Work" Content="Запуск" HorizontalAlignment="Left" Margin="10,7,0,0" VerticalAlignment="Top" Width="97" Height="63" FontFamily="Calibri" FontSize="20" Click="Work_Start"/>
-                <Button Name="Step_Work" Content="Шаг" HorizontalAlignment="Left" Margin="136,7,0,0" VerticalAlignment="Top" Width="87" Height="24" IsEnabled="False" Click="Step"/>
-                <Button Name="DoAll_Work" Content="Сделать всё" HorizontalAlignment="Left" Margin="136,44,0,0" VerticalAlignment="Top" Width="87" IsEnabled="False" Click="Do_All"/>
+                <Button Name="Step_Work" Content="Шаг" HorizontalAlignment="Left" Margin="150,7,0,0" VerticalAlignment="Top" Width="87" Height="24" IsEnabled="False" Click="Step"/>
+                <Button Name="DoAll_Work" Content="Сделать всё" HorizontalAlignment="Left" Margin="150,44,0,0" VerticalAlignment="Top" Width="87" IsEnabled="False" Click="Do_All"/>
+                <ComboBox x:Name="ComboBox1" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+                <Button x:Name="Load_Uzel" Content="Загрузить" HorizontalAlignment="Left" Margin="150,75,0,0" VerticalAlignment="Top" Width="87" Click="Load_Uzel_Click" IsEnabled="False"/>
             </Grid>
         </GroupBox>
-        <TextBlock Name="TB1" HorizontalAlignment="Left" Margin="39,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB5" HorizontalAlignment="Left" Margin="79,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB9" HorizontalAlignment="Left" Margin="119,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB13" HorizontalAlignment="Left" Margin="159,58,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB1" HorizontalAlignment="Left" Margin="39,58,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB5" HorizontalAlignment="Left" Margin="79,58,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB9" HorizontalAlignment="Left" Margin="119,58,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB13" HorizontalAlignment="Left" Margin="159,58,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
 
-        <TextBlock Name="TB2" HorizontalAlignment="Left" Margin="39,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB6" HorizontalAlignment="Left" Margin="79,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB10" HorizontalAlignment="Left" Margin="119,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB14" HorizontalAlignment="Left" Margin="159,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB2" HorizontalAlignment="Left" Margin="39,98,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB6" HorizontalAlignment="Left" Margin="79,98,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB10" HorizontalAlignment="Left" Margin="119,98,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB14" HorizontalAlignment="Left" Margin="159,98,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
 
-        <TextBlock Name="TB3" HorizontalAlignment="Left" Margin="39,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB7" HorizontalAlignment="Left" Margin="79,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB11" HorizontalAlignment="Left" Margin="119,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB15" HorizontalAlignment="Left" Margin="159,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB3" HorizontalAlignment="Left" Margin="39,138,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB7" HorizontalAlignment="Left" Margin="79,138,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB11" HorizontalAlignment="Left" Margin="119,138,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB15" HorizontalAlignment="Left" Margin="159,138,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
 
-        <TextBlock Name="TB4" HorizontalAlignment="Left" Margin="39,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB8" HorizontalAlignment="Left" Margin="79,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB12" HorizontalAlignment="Left" Margin="119,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
-        <TextBlock Name="TB16" HorizontalAlignment="Left" Margin="159,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="30" FontSize="20" TextAlignment="Center"/>
+        <TextBlock Name="TB4" HorizontalAlignment="Left" Margin="39,178,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB8" HorizontalAlignment="Left" Margin="79,178,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB12" HorizontalAlignment="Left" Margin="119,178,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
+        <TextBlock Name="TB16" HorizontalAlignment="Left" Margin="159,178,0,0" TextWrapping="WrapWithOverflow" VerticalAlignment="Top" Height="30" Width="30" FontSize="16" TextAlignment="Center"/>
         <TextBox Name="TextBox1" Grid.Column="1" HorizontalAlignment="Left" Height="276" Margin="7,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="335" IsReadOnly="True" VerticalScrollBarVisibility="Visible" FontSize="12"/>
         <TextBox Name="Table" HorizontalAlignment="Left" Height="225" Margin="203,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="379" FontFamily="SimSun" IsReadOnly="True" FontSize="16">
             <TextBox.Foreground>
@@ -76,12 +78,12 @@
         <Ellipse Visibility="{Binding ElementName=Stroki, Path=Visibility}" Height="39" Margin="30,93,0,0" Stroke="Black" Width="174" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Ellipse Visibility="{Binding ElementName=Stroki, Path=Visibility}" Height="40" Margin="30,133,0,0" Stroke="Black" Width="174" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Ellipse Visibility="{Binding ElementName=Stroki, Path=Visibility}" Height="40" Margin="30,174,0,0" Stroke="Black" Width="174" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        
+
         <TextBlock Visibility="{Binding ElementName=Stroki, Path=Visibility}" Text="T1" HorizontalAlignment="Left" Margin="5,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="25" FontSize="20"/>
         <TextBlock Visibility="{Binding ElementName=Stroki, Path=Visibility}" Text="T2" HorizontalAlignment="Left" Margin="5,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="25" FontSize="20"/>
         <TextBlock Visibility="{Binding ElementName=Stroki, Path=Visibility}" Text="T3" HorizontalAlignment="Left" Margin="5,141,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="25" FontSize="20"/>
         <TextBlock Visibility="{Binding ElementName=Stroki, Path=Visibility}" Text="T4" HorizontalAlignment="Left" Margin="5,181,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="25" Width="25" FontSize="20"/>
-        
+
         <Ellipse Name="Stolbci" Height="38" Margin="-27,115,0,0" Stroke="Black" Width="164" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" Visibility="Hidden">
             <Ellipse.RenderTransform>
                 <TransformGroup>
@@ -122,7 +124,7 @@
                 </TransformGroup>
             </Ellipse.RenderTransform>
         </Ellipse>
-        
+
         <TextBlock Visibility="{Binding ElementName=Stolbci, Path=Visibility}" Text="T1" HorizontalAlignment="Left" Margin="42,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24" Width="24" FontSize="20"/>
         <TextBlock Visibility="{Binding ElementName=Stolbci, Path=Visibility}" Text="T2" HorizontalAlignment="Left" Margin="82,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24" Width="24" FontSize="20"/>
         <TextBlock Visibility="{Binding ElementName=Stolbci, Path=Visibility}" Text="T3" HorizontalAlignment="Left" Margin="122,214,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="24" Width="24" FontSize="20"/>
