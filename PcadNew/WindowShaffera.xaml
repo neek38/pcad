@@ -138,5 +138,6 @@
                 </RadialGradientBrush>
             </Button.Background>
         </Button>
+        <Button Content="ReadMe" HorizontalAlignment="Left" Margin="57,89,0,0" Grid.Row="1" VerticalAlignment="Top" Width="243" Height="25" FontSize="14" Click="Button_Click"/>
     </Grid>
 </Window>

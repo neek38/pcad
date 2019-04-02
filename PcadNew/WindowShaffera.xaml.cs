@@ -564,6 +564,16 @@ namespace PcadNew
             }
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ReadMeShaffera readmeshaffera = new ReadMeShaffera();
+            readmeshaffera.Owner = this;
+            if (readmeshaffera.ShowDialog() == true)
+            {
+            }
+            
+        }
+
         private void Load_Uzel_Click(object sender, RoutedEventArgs e)
         {
             int i = ComboBox1.SelectedIndex;

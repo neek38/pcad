@@ -58,6 +58,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ReadMeShaffera.xaml.cs">
+      <DependentUpon>ReadMeShaffera.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowShaffera.xaml.cs">
       <DependentUpon>WindowShaffera.xaml</DependentUpon>
     </Compile>
@@ -73,6 +76,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ReadMeShaffera.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WindowShaffera.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
