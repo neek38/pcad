@@ -15,7 +15,9 @@
             </MenuItem>
             <MenuItem Header="Формирование R,Q" ></MenuItem>
             <MenuItem Header="Компоновка" ></MenuItem>
-            <MenuItem Header="Размещение" ></MenuItem>
+            <MenuItem Header="Размещение" >
+                <MenuItem Header="Общ.Итерационный" Click="MenuItem_Click_1"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
         </Menu>
 
