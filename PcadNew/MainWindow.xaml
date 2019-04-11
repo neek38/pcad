@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PcadNew"
         mc:Ignorable="d"
-        Title="Начальная страница" Height="450" Width="800">
+        Title="Начальная страница" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <Menu HorizontalAlignment="Left" Height="25" VerticalAlignment="Top" Width="792">
             <MenuItem Header="Файл" >
@@ -19,9 +19,10 @@
                 <MenuItem Header="Последовательные методы" ></MenuItem>
                 <MenuItem Header="Итерационные методы" >
                     <MenuItem Header="Общий итерационный метод" ></MenuItem>
-                    <MenuItem Header="Метод парных перестановок" ></MenuItem>
+                    <MenuItem Header="Метод парных перестановок"  Click="Parnyh_Click"></MenuItem>
                     <MenuItem Header="Метод Шаффера" Click="Call_Method_Shaffera" />
                 </MenuItem>
+				<MenuItem Header="Общ.Итерационный" Click="MenuItem_Click_1"></MenuItem>
             </MenuItem>
             <MenuItem Header="Трассировка" ></MenuItem>
         </Menu>

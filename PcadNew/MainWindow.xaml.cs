@@ -35,6 +35,22 @@ namespace PcadNew
         private void ShafferaClosed(object sender, EventArgs e)
         {
             Window1.IsEnabled = true;
+		}
+
+        private void Parnyh_Click(object sender, RoutedEventArgs e)
+        {
+            akushko_parnyh parnyhWindow = new akushko_parnyh();
+            parnyhWindow.ShowDialog();
+        }
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            razm_window razmwindow = new razm_window();
+            razmwindow.Show();
         }
     }
 }
