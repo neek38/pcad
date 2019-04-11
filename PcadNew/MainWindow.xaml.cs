@@ -29,6 +29,7 @@ namespace PcadNew
         {
             akushko_parnyh parnyhWindow = new akushko_parnyh();
             parnyhWindow.ShowDialog();
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
