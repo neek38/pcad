@@ -61,6 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Tracing.cs" />
     <Page Include="akushko_parnyh.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

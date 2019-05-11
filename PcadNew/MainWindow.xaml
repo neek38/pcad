@@ -24,9 +24,20 @@
                 </MenuItem>
                 <MenuItem Header="Общ.Итерационный" Click="MenuItem_Click_1"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Трассировка" ></MenuItem>
+            <MenuItem Header="Трассировка" >
+                <MenuItem Header="По модулю 3">
+                    <MenuItem Header="Демо" Click="start_demo_mode" ></MenuItem>
+                    <MenuItem Header="Рабочий" IsEnabled="False"></MenuItem>
+                </MenuItem>
+            </MenuItem>
         </Menu>
+        <Canvas Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="DRP" Width="600" Height="384" Margin="0,25,0,0" >
+            <DataGrid Name="matr" Grid.Row="1" AutoGenerateColumns="True" CanUserAddRows="False" ItemsSource="{Binding mySource}" Visibility="Hidden">
 
+            </DataGrid>
+            <Button x:Name="autoBtn" Content="Auto" Canvas.Left="496" Canvas.Top="30" Width="75" Click="auto_Click" Visibility="Hidden"/>
+            <Button x:Name="stepBtn" Content="Step" Canvas.Left="496" Canvas.Top="55" Width="75" Click="step_Click" Visibility="Hidden"/>
+        </Canvas>
 
     </Grid>
 </Window>
