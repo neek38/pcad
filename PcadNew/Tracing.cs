@@ -11,40 +11,35 @@ namespace PcadNew
 {
     public class Tracing
     {
-        public DataTable myDT;
-        public Wave bufWave { get; set; }
+        public DataTable myDT; // datatable of mainGrid
+        public Wave mainWave { get; set; } 
         public List<Wave> bufList { get; set; }
         public int counter { get; set; }
         public bool Point_B_is_Reached { get; set; }
         public Tracing(bool auto,DataTable dt,int counter,ref List<Wave> waves)
         {
+            myDT = new DataTable();
+            myDT = dt;
+            mainWave = null;
+            this.counter = counter;
+            Point_B_is_Reached = false;
             if (auto)
             {
                 // Auto tracint
-                myDT = new DataTable();
-                myDT = dt;
-                bufWave = null;
                 bufList = new List<Wave>(0);
-                this.counter = counter;
-                Point_B_is_Reached = false;
                 Drow_drp(false);
                 while (!Point_B_is_Reached)
                     Build();
-                while (bufWave.Parent != null)
+                while (mainWave.Parent != null)
                 {
-                    myDT.Rows[bufWave.i][bufWave.j] = "Х";
-                    bufWave = bufWave.Parent;
+                    myDT.Rows[mainWave.i][mainWave.j] = "X";
+                    mainWave = mainWave.Parent;
                 }
                 EndTrace();
             }
             else
             {
-                myDT = new DataTable();
-                myDT = dt;
-                bufWave = null;
                 bufList = waves;
-                this.counter = counter;
-                Point_B_is_Reached = false;
                 if (counter == 1)
                 {
                     Drow_drp(false);
@@ -57,10 +52,10 @@ namespace PcadNew
                         return;
                     }
                 }
-                while (bufWave.Parent != null)
+                while (mainWave.Parent != null)
                 {
-                    myDT.Rows[bufWave.i][bufWave.j] = "Х";
-                    bufWave = bufWave.Parent;
+                    myDT.Rows[mainWave.i][mainWave.j] = "X";
+                    mainWave = mainWave.Parent;
                 }
                 EndTrace();
             }
@@ -72,8 +67,8 @@ namespace PcadNew
             find_point_a(ref rowA, ref colA, ref point_A_was_found, 'A');
             if (point_A_was_found)
             {
-                bufWave = new Wave(rowA, colA, null);
-                bufList.Add(bufWave);
+                mainWave = new Wave(rowA, colA, null);
+                bufList.Add(mainWave);
             }
             else
             {
@@ -85,7 +80,7 @@ namespace PcadNew
         {
             for (int i = 0; i < myDT.Rows.Count; i++)
             {
-                for (int j = 0; j < myDT.Rows.Count; j++)
+                for (int j = 0; j < myDT.Columns.Count; j++)
                 {
                     if (myDT.Rows[i][j].ToString() == letter.ToString())
                     {
@@ -110,7 +105,7 @@ namespace PcadNew
                     {
                         //Toчка Б достугнута
                         Point_B_is_Reached = true;
-                        bufWave = temp;
+                        mainWave = temp;
                         return true;
                     }
                     if (myDT.Rows[temp.i - 1][temp.j].ToString() == "")
@@ -128,7 +123,7 @@ namespace PcadNew
                     if (myDT.Rows[temp.i][temp.j + 1].ToString() == "B")
                     {
                         Point_B_is_Reached = true;
-                        bufWave = temp;
+                        mainWave = temp;
                         return true;
                     }
                     if (myDT.Rows[temp.i][temp.j + 1].ToString() == "")
@@ -146,7 +141,7 @@ namespace PcadNew
                     if (myDT.Rows[temp.i + 1][temp.j].ToString() == "B")
                     {
                         Point_B_is_Reached = true;
-                        bufWave = temp;
+                        mainWave = temp;
                         return true;
                     }
                     if (myDT.Rows[temp.i + 1][temp.j].ToString() == "")
@@ -164,7 +159,7 @@ namespace PcadNew
                     if (myDT.Rows[temp.i][temp.j - 1].ToString() == "B")
                     {
                         Point_B_is_Reached = true;
-                        bufWave = temp;
+                        mainWave = temp;
                         return true;
                     }
                     if (myDT.Rows[temp.i][temp.j - 1].ToString() == "")
